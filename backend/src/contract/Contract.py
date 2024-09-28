@@ -20,5 +20,3 @@ class Contract:
                 f"obligor_client_id={self.obligor_client_id}, obligatee_client_id={
                     self.obligatee_client_id}, "
                 f"text='{self.text}', face_value={self.face_value})")
-
-    def __from_db(self, id: str) -> None:

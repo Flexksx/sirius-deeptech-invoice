@@ -1,4 +1,3 @@
-# model/CompanyType.py
 from enum import Enum
 
 class CompanyType(Enum):
