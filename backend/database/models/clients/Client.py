@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Time, JSON
+from sqlalchemy import Column, Integer, String, Time, JSON, DateTime
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from database import Base
@@ -10,7 +10,7 @@ class Client(Base):
     name = Column(String)
     idno = Column(String)
     company_type = Column(String)
-    created_date = Column(Time)
+    created_date = Column(DateTime)
     vertical = Column(String)
     address = Column(String)
     bank_code = Column(String)

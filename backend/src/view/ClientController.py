@@ -1,6 +1,11 @@
 from flask import Flask, jsonify, request, abort
 from sqlalchemy.exc import SQLAlchemyError
-from database import Client, Contract, db_session  
+import os 
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+
+from database.models import Client, Contract
+from database import db_session
 from datetime import datetime
 
 app = Flask(__name__)
@@ -13,7 +18,11 @@ app = Flask(__name__)
 def get_clients():
     try:
         clients = db_session.query(Client).all()
-        return jsonify([client.__dict__ for client in clients]), 200
+        # Use list comprehension to filter out SQLAlchemy's internal attributes
+        return jsonify([{
+            key: value for key, value in client.__dict__.items()
+            if not key.startswith('_')  # Exclude internal attributes
+        } for client in clients]), 200
     except SQLAlchemyError as e:
         db_session.rollback()
         abort(500, description=str(e))
