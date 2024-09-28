@@ -13,5 +13,5 @@ class InvoiceType:
         self.notes = notes
         self.data = data
         self.description = description
-        self.contract = Contract()
+        self.contract = Contract(id=contract_id)
         self.terms = Terms()

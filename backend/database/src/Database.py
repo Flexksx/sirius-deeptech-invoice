@@ -1,5 +1,6 @@
 import sqlite3
 from datetime import datetime
+from contracts.DBContracts import DBContracts
 import os
 
 
@@ -10,13 +11,15 @@ class Database:
             os.path.dirname(__file__), '../../database/database.db')
 
         self.conn = sqlite3.connect(self.database_path)
-        self.cursor = self.conn.cursor()
-        self.conn.execute('PRAGMA foreign_keys = ON;')
         self.log('Database connected successfully')
 
+        self.cursor = self.conn.cursor()
+        self.conn.execute('PRAGMA foreign_keys = ON;')
+        self.contract = DBContracts(self.conn)
+
     def log(self, message):
-        header = "[DATABASE]"
         currentTime = datetime.now()
+        header = "[DATABASE]"
         print(f'{header} {currentTime} {message}')
 
     def __del__(self) -> None:
