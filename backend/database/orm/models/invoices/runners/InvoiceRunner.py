@@ -7,16 +7,15 @@ from database import Base
 class InvoiceRunner(Base):
     __tablename__ = 'invoice_runners'
     id = Column(Integer, primary_key=True)
-    invoice_type_id = Column(Integer, ForeignKey('invoice_types.id'))
     runner_type = Column(String)
+    created_date = Column(Time, default=datetime.now)
+    data = Column(JSON, nullable=True)
 
-    invoice_type = relationship(
-        'InvoiceType', back_populates='invoice_runners')
-    invoice_runs = relationship('InvoiceRun', back_populates='invoice_runner')
+    run_records = relationship('DueInvoiceRunRecord', back_populates='runner')
 
-    def __init__(self, invoice_type_id, runner_type):
-        self.invoice_type_id = invoice_type_id
+    def __init__(self, runner_type, data):
         self.runner_type = runner_type
+        self.data = data
 
     def __repr__(self):
         return f'<InvoiceRunner {self.id}>'

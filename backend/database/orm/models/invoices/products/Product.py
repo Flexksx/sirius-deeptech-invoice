@@ -13,9 +13,6 @@ class Product(Base):
     unit = Column(String)
     currency = Column(String)
 
-    invoice_products = relationship(
-        'InvoiceProducts', back_populates='product')
-
     def __init__(self, name, description, price, unit, currency):
         self.name = name
         self.description = description

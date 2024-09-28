@@ -1,2 +1,2 @@
-from .InvoiceProducts import InvoiceProducts
+from .InvoiceTypeProducts import InvoiceTypeProducts
 from .Product import Product

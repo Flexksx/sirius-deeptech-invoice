@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Time, ForeignKey, JSON
+from sqlalchemy import Column, Integer, String, Time, ForeignKey, JSON, DateTime
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from database import Base
@@ -9,19 +9,14 @@ class InvoiceType(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String)
     contract_id = Column(Integer, ForeignKey('contracts.id'))
-    created_date = Column(Time)
+    created_date = Column(DateTime, default=datetime.now)
     notes = Column(String)
     data = Column(JSON)
     description = Column(String)
 
     contract = relationship('Contract', back_populates='invoice_types')
-    invoices = relationship('Invoice', back_populates='invoices')
-    invoice_products = relationship(
-        'InvoiceProduct', back_populates='invoice_type')
-    invoice_runners = relationship(
-        'InvoiceRunner', back_populates='invoice_type')
-    terms = relationship('Terms', back_populates='terms')
-    invoice = relationship('Invoice', back_populates='invoice_type')
+    due_invoices = relationship('DueInvoice', back_populates='invoice_type')
+    products = relationship('Product', secondary='invoice_type_products')
 
     def __init__(self, name, contract_id, notes, data, description):
         self.name = name
