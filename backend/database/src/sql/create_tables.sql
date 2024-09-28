@@ -1,83 +1,114 @@
-CREATE TABLE terms_invoices_join (
-    invoice_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+CREATE TABLE IF NOT EXISTS terms_invoices_join (
+    invoice_type_id INTEGER NOT NULL,
     terms_id INTEGER NOT NULL,
-    FOREIGN KEY (invoice_id) REFERENCES invoices(id),
-    FOREIGN KEY (terms_id) REFERENCES terms(id)
-);
+    FOREIGN KEY (invoice_type_id) REFERENCES invoice_type (id),
+    FOREIGN KEY (terms_id) REFERENCES terms (id)
+)
 
-CREATE TABLE invoices (
+CREATE TABLE IF NOT EXISTS invoice_type (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
     contract_id INTEGER NOT NULL,
-    description TEXT NOT NULL, -- Replaced MULTILINESTRING with TEXT
-    invoice_date DATETIME NOT NULL,
-    invoice_number TEXT NOT NULL, -- Replaced LINESTRING with TEXT
-    invoice_due_date DATETIME NOT NULL,
-    payment_terms INTEGER NOT NULL,
-    notes TEXT NOT NULL, -- Replaced MULTILINESTRING with TEXT
-    data JSON NOT NULL,
-    FOREIGN KEY (contract_id) REFERENCES contracts(id)
-);
+    created_date TIMESTAMP NOT NULL,
+    notes TEXT NOT NULL,
+    data TEXT NOT NULL,
+    description TEXT NOT NULL,
+    FOREIGN KEY (contract_id) REFERENCES contracts (id)
+)
 
-CREATE TABLE products (
+CREATE TABLE IF NOT EXISTS invoices (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL, -- Replaced LINESTRING with TEXT
-    price REAL NOT NULL
-);
+    invoice_number TEXT NOT NULL,
+    invoice_date DATETIME NOT NULL,
+    invoice_due_date DATETIME NOT NULL,
+    invoice_type_id INTEGER NOT NULL,
+    FOREIGN KEY (invoice_type_id) REFERENCES invoice_type (id)
+)
 
-CREATE TABLE contracts (
+CREATE TABLE IF NOT EXISTS products (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    price DECIMAL(8, 2) NOT NULL
+)
+
+CREATE TABLE IF NOT EXISTS contracts (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     created_date TIMESTAMP NOT NULL,
     updated_date TIMESTAMP NOT NULL,
-    obligor_id INTEGER NOT NULL,
-    obligatee_id INTEGER NOT NULL,
-    text TEXT NOT NULL, -- Replaced MULTILINESTRING with TEXT
-    face_value INTEGER NOT NULL,
-    FOREIGN KEY (obligor_id) REFERENCES clients(id),
-    FOREIGN KEY (obligatee_id) REFERENCES clients(id)
-);
+    obligor_client_id INTEGER NOT NULL,
+    obligatee_client_id INTEGER NOT NULL,
+    text TEXT NOT NULL,
+    data TEXT NOT NULL,
+    FOREIGN KEY (obligor_client_id) REFERENCES clients (id),
+    FOREIGN KEY (obligatee_client_id) REFERENCES clients (id)
+)
 
-CREATE TABLE products_invoices_join (
-    invoice_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+CREATE TABLE IF NOT EXISTS products_invoices_join (
+    invoice_type_id INTEGER NOT NULL,
     product_id INTEGER NOT NULL,
     quantity INTEGER NOT NULL,
-    line_total REAL NOT NULL,
-    FOREIGN KEY (invoice_id) REFERENCES invoices(id),
-    FOREIGN KEY (product_id) REFERENCES products(id)
-);
+    line_total DECIMAL(8, 2) NOT NULL,
+    FOREIGN KEY (invoice_type_id) REFERENCES invoice_type (id),
+    FOREIGN KEY (product_id) REFERENCES products (id)
+)
 
-CREATE TABLE invoice_schedules (
+CREATE TABLE IF NOT EXISTS invoice_runners (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    invoice_type_id INTEGER NOT NULL,
+    runner_type TEXT NOT NULL,
+    FOREIGN KEY (invoice_type_id) REFERENCES invoice_type (id)
+)
+
+CREATE TABLE IF NOT EXISTS invoice_runs (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     invoice_id INTEGER NOT NULL,
-    frequency TIME NOT NULL,
-    created_date INTEGER NOT NULL,
-    updated_date INTEGER NOT NULL,
-    FOREIGN KEY (invoice_id) REFERENCES invoices(id)
-);
-
-CREATE TABLE clients (
-    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL, -- Replaced LINESTRING with TEXT
-    idno TEXT NOT NULL, -- Replaced LINESTRING with TEXT
-    company_type TEXT NOT NULL, -- Replaced ENUM with TEXT
+    runner_id INTEGER NOT NULL,
     created_date TIMESTAMP NOT NULL,
-    vertical TEXT NOT NULL, -- Replaced ENUM with TEXT
-    address TEXT NOT NULL, -- Replaced LINESTRING with TEXT
-    tva_code TEXT NOT NULL, -- Replaced LINESTRING with TEXT
-    bank_code TEXT NOT NULL, -- Replaced LINESTRING with TEXT
-    bank_name TEXT NOT NULL, -- Replaced LINESTRING with TEXT
-    iban TEXT NOT NULL, -- Replaced LINESTRING with TEXT
-    bank_address TEXT NOT NULL, -- Replaced LINESTRING with TEXT
-    fiscal_code TEXT NOT NULL, -- Replaced LINESTRING with TEXT
-    person_id INTEGER NOT NULL,
-    director_first_name TEXT NOT NULL, -- Replaced LINESTRING with TEXT
-    director_last_name TEXT NOT NULL, -- Replaced LINESTRING with TEXT
-    country INTEGER NOT NULL,
-    email TEXT NOT NULL -- Replaced LINESTRING with TEXT
-);
+    completed_date TIMESTAMP NOT NULL,
+    status BOOLEAN NOT NULL,
+    FOREIGN KEY (invoice_id) REFERENCES invoices (id),
+    FOREIGN KEY (runner_id) REFERENCES invoice_runners (id)
+)
 
-CREATE TABLE terms (
+CREATE TABLE IF NOT EXISTS invoice_runner_schedules (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    type TEXT NOT NULL, -- Replaced ENUM with TEXT
-    description TEXT NOT NULL, -- Replaced MULTILINESTRING with TEXT
-    data JSON NOT NULL
-);
+    runner_id INTEGER NOT NULL,
+    frequency TIME NOT NULL,
+    start_date DATETIME NOT NULL,
+    FOREIGN KEY (runner_id) REFERENCES invoice_runners (id)
+)
+
+CREATE TABLE IF NOT EXISTS invoice_runner_one_time (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    runner_id INTEGER NOT NULL,
+    start_date DATETIME NOT NULL,
+    FOREIGN KEY (runner_id) REFERENCES invoice_runners (id)
+)
+
+
+CREATE TABLE IF NOT EXISTS clients (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    idno TEXT NOT NULL,
+    company_type TEXT NOT NULL,
+    created_date TIMESTAMP NOT NULL,
+    vertical TEXT NOT NULL,
+    address TEXT NOT NULL,
+    tva_code TEXT NOT NULL,
+    bank_code TEXT NOT NULL,
+    bank_name TEXT NOT NULL,
+    iban TEXT NOT NULL,
+    bank_address TEXT NOT NULL,
+    fiscal_code TEXT NOT NULL,
+    director_first_name TEXT NOT NULL,
+    director_last_name TEXT NOT NULL,
+    country TEXT NOT NULL,
+    email TEXT NOT NULL
+)
+
+CREATE TABLE IF NOT EXISTS terms (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    type TEXT NOT NULL,
+    description TEXT NOT NULL,
+    data TEXT NOT NULL
+)

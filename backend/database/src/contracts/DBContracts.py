@@ -7,6 +7,7 @@ class DBContracts:
         self.conn = conn
         self.log('DBContracts initialized')
         getPath = os.path.join(os.path.dirname(__file__), 'sql/get.sql')
+        insertPath = os.path.join(os.path.dirname(__file__), 'sql/insert.sql')
         self.log(f'getPath: {getPath}')
         self.queries = {
             "get": open(getPath).read(),
