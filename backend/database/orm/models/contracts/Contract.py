@@ -11,15 +11,14 @@ class Contract(Base):
     updated_date = Column(Time)
     obligor_client_id = Column(Integer, ForeignKey('clients.id'))
     obligee_client_id = Column(Integer, ForeignKey('clients.id'))
+    text = Column(String)
+    data = Column(JSON)
 
-    # Relații distincte
     obligor_client = relationship(
         'Client', back_populates='obligor_contracts', foreign_keys=[obligor_client_id])
     obligee_client = relationship(
         'Client', back_populates='obligee_contracts', foreign_keys=[obligee_client_id])
-
-    text = Column(String)
-    data = Column(JSON)
+    # invoice_types = relationship('InvoiceType', back_populates='contract')
 
     def __init__(self, created_date=None, updated_date=None, obligor_client_id=None, obligee_client_id=None, text=None, data=None):
         if created_date is None:

@@ -1,5 +1,5 @@
 from database import init_db, db_session
-from models import Contract
+from models import *
 u = Contract(created_date='2021-01-01', updated_date='2021-01-01',
              obligor_client_id=1, obligee_client_id=2, text='text', data='data')
 

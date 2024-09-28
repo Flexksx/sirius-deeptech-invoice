@@ -1,2 +1,3 @@
-from .Client import Client
-from .Contract import Contract
+# from .invoices import *
+from .clients import *
+from .contracts import *
