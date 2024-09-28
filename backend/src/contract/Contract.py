@@ -12,8 +12,6 @@ class Contract:
         self.obligatee_client_id = obligatee_client_id
         self.text = text
         self.face_value = face_value
-        if id is not None:
-            self.__from_db(id)
 
     def __repr__(self) -> str:
         return (f"Contract(id={self.id}, created_date={self.created_date}, updated_date={self.updated_date}, "
