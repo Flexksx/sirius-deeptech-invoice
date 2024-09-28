@@ -10,9 +10,6 @@ from datetime import datetime
 
 app = Flask(__name__)
 
-
-
-
 # GET all clients
 @app.route("/clients", methods=["GET"])
 def get_clients():
@@ -28,107 +25,198 @@ def get_clients():
         abort(500, description=str(e))
 
 
-# GET a single client by id
 @app.route("/clients/<int:client_id>", methods=["GET"])
 def get_client(client_id):
-    client = db_session.query(Client).filter(Client.id == client_id).first()
-    if not client:
-        abort(404, description="Client not found")
-    return jsonify(client.__dict__), 200
+    try:
+        # Query for the client by ID
+        client = db_session.query(Client).get(client_id)
+        if not client:
+            abort(404, description="Client not found")
+        
+        # Serialize the client object (you can use __dict__ filtering or Marshmallow as shown previously)
+        return jsonify({
+            key: value for key, value in client.__dict__.items()
+            if not key.startswith('_')  # Exclude internal attributes
+        }), 200
+    except SQLAlchemyError as e:
+        db_session.rollback()
+        abort(500, description=str(e))
 
 
-# POST (create) a new client
 @app.route("/clients", methods=["POST"])
 def create_client():
     try:
-        data = request.json
+        # Get the JSON data from the request
+        data = request.get_json()
+        
+        # Validate the input data (you can add more validations as needed)
+        if not data or not isinstance(data, dict):
+            abort(400, description="Invalid input data")
+        
+        # Create a new Client instance
         new_client = Client(
-            name=data['name'],
-            idno=data['idno'],
-            company_type=data['company_type'],
-            vertical=data['vertical'],
-            address=data['address'],
-            bank_code=data['bank_code'],
-            bank_name=data['bank_name'],
-            bank_address=data['bank_address'],
-            iban=data['iban'],
-            tva_code=data['tva_code'],
-            fiscal_code=data['fiscal_code'],
-            director_first_name=data['director_first_name'],
-            director_last_name=data['director_last_name'],
-            country=data['country'],
-            email=data['email'],
-            phone=data['phone'],
-            data=data['data']
+            name=data.get("name"),
+            idno=data.get("idno"),
+            company_type=data.get("company_type"),
+            vertical=data.get("vertical"),
+            address=data.get("address"),
+            bank_code=data.get("bank_code"),
+            bank_name=data.get("bank_name"),
+            bank_address=data.get("bank_address"),
+            iban=data.get("iban"),
+            tva_code=data.get("tva_code"),
+            fiscal_code=data.get("fiscal_code"),
+            director_first_name=data.get("director_first_name"),
+            director_last_name=data.get("director_last_name"),
+            country=data.get("country"),
+            email=data.get("email"),
+            phone=data.get("phone"),
+            data=data.get("data", {})
         )
+        
+        # Add the new client to the session and commit
         db_session.add(new_client)
         db_session.commit()
-        return jsonify(new_client.__dict__), 201
+        
+        # Return the created client as JSON with a 201 Created status
+        return jsonify({
+            "id": new_client.id,
+            "name": new_client.name,
+            "idno": new_client.idno,
+            "company_type": new_client.company_type,
+            "vertical": new_client.vertical,
+            "address": new_client.address,
+            "bank_code": new_client.bank_code,
+            "bank_name": new_client.bank_name,
+            "bank_address": new_client.bank_address,
+            "iban": new_client.iban,
+            "tva_code": new_client.tva_code,
+            "fiscal_code": new_client.fiscal_code,
+            "director_first_name": new_client.director_first_name,
+            "director_last_name": new_client.director_last_name,
+            "country": new_client.country,
+            "email": new_client.email,
+            "phone": new_client.phone,
+            "data": new_client.data
+        }), 201
+        
     except SQLAlchemyError as e:
         db_session.rollback()
         abort(500, description=str(e))
 
 
-# PUT (update) an existing client
 @app.route("/clients/<int:client_id>", methods=["PUT"])
 def update_client(client_id):
-    client = db_session.query(Client).filter(Client.id == client_id).first()
-    if not client:
-        abort(404, description="Client not found")
-
     try:
-        data = request.json
-        client.name = data.get('name', client.name)
-        client.idno = data.get('idno', client.idno)
-        client.company_type = data.get('company_type', client.company_type)
-        client.vertical = data.get('vertical', client.vertical)
-        client.address = data.get('address', client.address)
-        client.bank_code = data.get('bank_code', client.bank_code)
-        client.bank_name = data.get('bank_name', client.bank_name)
-        client.bank_address = data.get('bank_address', client.bank_address)
-        client.iban = data.get('iban', client.iban)
-        client.tva_code = data.get('tva_code', client.tva_code)
-        client.fiscal_code = data.get('fiscal_code', client.fiscal_code)
-        client.director_first_name = data.get('director_first_name', client.director_first_name)
-        client.director_last_name = data.get('director_last_name', client.director_last_name)
-        client.country = data.get('country', client.country)
-        client.email = data.get('email', client.email)
-        client.phone = data.get('phone', client.phone)
-        client.data = data.get('data', client.data)
-        client.updated_date = datetime.now()
+        # Get the JSON data from the request
+        data = request.get_json()
+        
+        # Validate the input data
+        if not data or not isinstance(data, dict):
+            abort(400, description="Invalid input data")
+        
+        # Retrieve the client by ID
+        client = db_session.query(Client).get(client_id)
+        
+        # Check if the client exists
+        if not client:
+            abort(404, description="Client not found")
+        
+        # Update the client fields with the new data
+        client.name = data.get("name", client.name)
+        client.idno = data.get("idno", client.idno)
+        client.company_type = data.get("company_type", client.company_type)
+        client.vertical = data.get("vertical", client.vertical)
+        client.address = data.get("address", client.address)
+        client.bank_code = data.get("bank_code", client.bank_code)
+        client.bank_name = data.get("bank_name", client.bank_name)
+        client.bank_address = data.get("bank_address", client.bank_address)
+        client.iban = data.get("iban", client.iban)
+        client.tva_code = data.get("tva_code", client.tva_code)
+        client.fiscal_code = data.get("fiscal_code", client.fiscal_code)
+        client.director_first_name = data.get("director_first_name", client.director_first_name)
+        client.director_last_name = data.get("director_last_name", client.director_last_name)
+        client.country = data.get("country", client.country)
+        client.email = data.get("email", client.email)
+        client.phone = data.get("phone", client.phone)
+        client.data = data.get("data", client.data)
 
+        # Commit the changes to the database
         db_session.commit()
-        return jsonify(client.__dict__), 200
+        
+        # Return a success message along with the updated client data
+        return jsonify({
+            "message": "Client updated successfully.",
+            "client": {
+                "id": client.id,
+                "name": client.name,
+                "idno": client.idno,
+                "company_type": client.company_type,
+                "vertical": client.vertical,
+                "address": client.address,
+                "bank_code": client.bank_code,
+                "bank_name": client.bank_name,
+                "bank_address": client.bank_address,
+                "iban": client.iban,
+                "tva_code": client.tva_code,
+                "fiscal_code": client.fiscal_code,
+                "director_first_name": client.director_first_name,
+                "director_last_name": client.director_last_name,
+                "country": client.country,
+                "email": client.email,
+                "phone": client.phone,
+                "data": client.data
+            }
+        }), 200
+        
     except SQLAlchemyError as e:
         db_session.rollback()
         abort(500, description=str(e))
 
 
-# DELETE a client
 @app.route("/clients/<int:client_id>", methods=["DELETE"])
 def delete_client(client_id):
-    client = db_session.query(Client).filter(Client.id == client_id).first()
-    if not client:
-        abort(404, description="Client not found")
-    
     try:
+        # Retrieve the client by ID
+        client = db_session.query(Client).get(client_id)
+        
+        # Check if the client exists
+        if not client:
+            abort(404, description="Client not found")
+        
+        # Delete the client from the session
         db_session.delete(client)
         db_session.commit()
-        return jsonify({"message": f"Client {client_id} deleted successfully"}), 200
+        
+        # Return a success message
+        return jsonify({"message": "Client deleted successfully."}), 200
+        
     except SQLAlchemyError as e:
         db_session.rollback()
         abort(500, description=str(e))
 
 
-# GET all contracts for a specific client (obligor)
+
 @app.route("/clients/<int:client_id>/contracts", methods=["GET"])
 def get_client_contracts(client_id):
-    client = db_session.query(Client).filter(Client.id == client_id).first()
-    if not client:
-        abort(404, description="Client not found")
+    try:
+        # Retrieve the client by ID
+        client = db_session.query(Client).get(client_id)
 
-    contracts = client.obligor_contracts + client.obligee_contracts  # both types of contracts
-    return jsonify([contract.__dict__ for contract in contracts]), 200
+        # Check if the client exists
+        if not client:
+            abort(404, description="Client not found")
+        
+        # Get all contracts associated with the client
+        contracts = client.obligor_contracts + client.obligee_contracts
+
+        # Return the contracts as JSON
+        return jsonify([contract.__dict__ for contract in contracts]), 200
+
+    except SQLAlchemyError as e:
+        db_session.rollback()
+        abort(500, description=str(e))
+
 
 
 # POST (add) a new contract for a specific client
