@@ -1,5 +1,5 @@
 class TermsInvoicesJoin:
-    def __init__(self, invoice_type_id: int, terms_id: int):
+    def __init__(self, invoice_type_id: str, terms_id: str):
         self.invoice_type_id = invoice_type_id
         self.terms_id = terms_id
 

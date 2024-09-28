@@ -1,5 +1,5 @@
 class Invoice:
-    def __init__(self, id: int, invoice_number: str, invoice_date: str, invoice_due_date: str, invoice_type_id: int):
+    def __init__(self, id: str, invoice_number: str, invoice_date: str, invoice_due_date: str, invoice_type_id: str):
         self.id = id 
         self.invoice_number = invoice_number  
         self.invoice_date = invoice_date 

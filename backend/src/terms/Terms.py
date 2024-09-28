@@ -2,7 +2,7 @@ from typing import Dict
 from TermType import TermType
 
 class Terms:
-    def __init__(self, id: int, type: TermType, description: str, data: Dict):
+    def __init__(self, id: str, type: TermType, description: str, data: Dict):
         self.id = id  
         self.type = type  
         self.description = description 
