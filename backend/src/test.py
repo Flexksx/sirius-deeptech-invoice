@@ -14,3 +14,6 @@ db_session.add(u)  # Add the new contract to the session
 db_session.commit()  # Commit the session to save the changes
 
 print("Contract added successfully.")
+
+
+
