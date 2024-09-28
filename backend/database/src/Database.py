@@ -21,10 +21,17 @@ class Database:
             os.path.dirname(__file__), 'sql/create_tables.sql')
         dropTablesPath = os.path.join(
             os.path.dirname(__file__), 'sql/drop_tables.sql')
-
+        checkTablesPath = os.path.join(
+            os.path.dirname(__file__), 'sql/check_tables.sql')
+        restartTablesPath = os.path.join(
+            os.path.dirname(__file__), 'sql/restart_database.sql')
+               
+        
         self.queries = {
             "init_tables": open(initTablesPath).read(),
-            "drop_tables": open(dropTablesPath).read()
+            "drop_tables": open(dropTablesPath).read(),
+            "check_tables": open(checkTablesPath).read(),
+            "restart_database": open(restartTablesPath).read()
         }
 
     def log(self, message):
@@ -44,6 +51,25 @@ class Database:
         conn.commit()
         self.log('Tables created successfully')
 
+
+    def check_tables(self, conn=None, cursor=None):
+        if conn is None:
+            conn = self.conn
+        if cursor is None:
+            cursor = self.cursor
+
+        cursor.execute(self.queries['check_tables'])
+        tables = cursor.fetchall()
+
+        conn.commit()
+
+        if tables:
+            table_names = [table[0] for table in tables]  # Extract table names from the tuples
+            self.log(f"Existing tables: {', '.join(table_names)}")
+        else:
+            self.log("No existing tables found")
+
+
     def drop_tables(self, conn=None, cursor=None):
         if conn is None:
             conn = self.conn
@@ -52,3 +78,23 @@ class Database:
         cursor.executescript(self.queries["drop_tables"])
         conn.commit()
         self.log('Tables dropped successfully')
+
+
+    def restart_database(self, conn=None, cursor=None):
+        if conn is None:
+            conn = self.conn
+        if cursor is None:
+            cursor = self.cursor
+# Fetching all the tables
+        self.log("Fetching the tables for deletion..")
+        cursor.execute(self.queries["restart_database"])        
+        tables = cursor.fetchall()
+# Drop tables
+        if tables:
+            self.drop_tables()
+            self.log("All tables dropped successfully.")
+        else:
+            self.log("No existing tables found to drop.")
+# Reinitialozation
+        self.log("Reinitializing tables...")
+        self.init_tables()
