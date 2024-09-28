@@ -32,5 +32,9 @@ export default {
       }
     }
   },
-  plugins: [flowbitePlugin]
+  plugins: [
+      flowbitePlugin,
+    require('flowbite/plugin')
+    ({
+      charts: true})]
 };

@@ -29,17 +29,37 @@
     {#each $filteredCompanies as company, index}
         <div class="bg-darkBlue p-5 rounded-lg shadow-md">
             <div class="flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <img src={company.icon} alt="Company Icon" class="w-12 h-12 rounded-full"/>
+                <div class="flex items-center gap-5">
+                    <img src={company.icon} alt="Company Icon" class="w-16 h-16 rounded-full"/>
                     <div class="text-xl font-semibold text-white">{company.name}</div>
+
                 </div>
-                <Button
-                        on:click={() => toggleManage(index)}
-                        class="flex items-center gap-2 p-2 text-white hover:text-primary transition"
-                >
-                    <UserSettingsOutline class="w-6 h-6"/>
-                    Manage
-                </Button>
+                <div class="flex">
+                    <div class="flex gap-9 mr-20">
+                        <div class="flex-col">
+                            <div class="text-xl font-semibold text-gray-500">Pending: {company.invoices[0].pending}</div>
+                            <div class="text-xl font-semibold text-gray-500">Total: {company.invoices[0].sum} {company.invoices[0].currency}</div>
+                        </div>
+
+                        <div class="flex-col">
+                            <div class="text-xl font-semibold text-red-500">Overdue: {company.invoices[2].overdue}</div>
+                            <div class="text-xl font-semibold text-red-500">Total: {company.invoices[2].sum} {company.invoices[2].currency}</div>
+                        </div>
+
+                        <div class="flex-col">
+                            <div class="text-xl font-semibold text-green-500">Paid: {company.invoices[1].paid}</div>
+                            <div class="text-xl font-semibold text-green-500">Total: {company.invoices[1].sum} {company.invoices[1].currency}</div>
+                        </div>
+                    </div>
+
+                    <Button
+                            on:click={() => toggleManage(index)}
+                            class="flex items-center gap-2 p-2 text-white hover:text-primary transition"
+                    >
+                        <UserSettingsOutline class="w-6 h-6"/>
+                        Manage
+                    </Button>
+                </div>
             </div>
 
             {#if company.isOpen}
@@ -73,10 +93,16 @@
                                         </Button>
                                     </div>
                                 </div>
-                                <Button class="mt-5"
-                                        on:click={() => viewInvoices(contract.name)}>
-                                    View Invoices
-                                </Button>
+                                <div class="flex gap-5">
+                                    <Button class="mt-5"
+                                            on:click={() => viewInvoices(contract.name)}>
+                                        View Invoices
+                                    </Button>
+                                    <Button outline class="mt-5"
+                                            on:click={() => viewModal(contract.id)}>
+                                        View Contract
+                                    </Button>
+                                </div>
                             </div>
                         {/each}
                     </div>
