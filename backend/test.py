@@ -1,6 +1,8 @@
-from src import Contract
-from database import Database
+from database import db_session,init_db
+from database.models import *
+u = Contract(created_date='2021-01-01', updated_date='2021-01-01',
+             obligor_client_id=1, obligee_client_id=2, text='text', data='data')
 
-c = Contract('1')
-print(Contract)
-print(c)
+init_db()
+db_session.add(u)
+db_session.commit()
