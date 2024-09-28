@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Time, ForeignKey, JSON
+from sqlalchemy import Column, DateTime, Integer, String, Time, ForeignKey, JSON
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from database import Base
@@ -7,8 +7,8 @@ from database import Base
 class Contract(Base):
     __tablename__ = 'contracts'
     id = Column(Integer, primary_key=True)
-    created_date = Column(Time)
-    updated_date = Column(Time)
+    created_date = Column(DateTime)
+    updated_date = Column(DateTime)
     obligor_client_id = Column(Integer, ForeignKey('clients.id'))
     obligee_client_id = Column(Integer, ForeignKey('clients.id'))
     text = Column(String)

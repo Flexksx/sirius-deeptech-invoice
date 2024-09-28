@@ -10,7 +10,6 @@ from datetime import datetime
 
 app = Flask(__name__)
 
-# GET all clients
 @app.route("/clients", methods=["GET"])
 def get_clients():
     try:
@@ -196,7 +195,7 @@ def delete_client(client_id):
         abort(500, description=str(e))
 
 
-
+#TODO:
 @app.route("/clients/<int:client_id>/contracts", methods=["GET"])
 def get_client_contracts(client_id):
     try:
