@@ -9,9 +9,8 @@ class Terms(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String)
     description = Column(String)
-    data = Column(JSON)
-
-    invoice_terms = relationship('InvoiceTerms', back_populates='terms')
+    data = Column(JSON, nullable=True)
+    invoice_type_id = Column(Integer, ForeignKey('invoice_types.id'))
 
     def __init__(self, name, description, data):
         self.name = name

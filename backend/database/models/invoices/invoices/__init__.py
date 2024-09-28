@@ -1,2 +1,2 @@
-from .Invoice import Invoice
+from .DueInvoice import DueInvoice
 from .InvoiceType import InvoiceType
