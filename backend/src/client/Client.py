@@ -6,7 +6,7 @@ from typing import List
 
 
 class Client:
-    def __init__(self, id: int, name: str, idno: str, company_type: CompanyType, created_date: datetime,
+    def __init__(self, id: str, name: str, idno: str, company_type: CompanyType, created_date: datetime,
                  vertical: VerticalType, address: str, tva_code: str, bank_code: str, bank_name: str,
                  iban: str, bank_address: str, fiscal_code: str,
                  director_first_name: str, director_last_name: str, country: str, email: str):

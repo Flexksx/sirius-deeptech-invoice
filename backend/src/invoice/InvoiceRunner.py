@@ -1,7 +1,7 @@
 from RunnerType import RunnerType
 
 class InvoiceRunner:
-    def __init__(self, id: int, invoice_type_id: int, runner_type: RunnerType):
+    def __init__(self, id: str, invoice_type_id: str, runner_type: RunnerType):
         self.id = id 
         self.invoice_type_id = invoice_type_id  
         self.runner_type = runner_type  

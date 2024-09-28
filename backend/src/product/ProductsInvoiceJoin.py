@@ -1,5 +1,5 @@
 class ProductsInvoicesJoin:
-    def __init__(self, invoice_type_id: int, product_id: int, quantity: int, line_total: float):
+    def __init__(self, invoice_type_id: str, product_id: str, quantity: int, line_total: float):
         self.invoice_type_id = invoice_type_id  
         self.product_id = product_id  
         self.quantity = quantity  

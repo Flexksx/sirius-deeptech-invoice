@@ -1,5 +1,5 @@
 class InvoiceRun:
-    def __init__(self, id: int, invoice_id: int, runner_id: int, created_date: str, completed_date: str, status: bool):
+    def __init__(self, id: str, invoice_id: str, runner_id: str, created_date: str, completed_date: str, status: bool):
         self.id = id 
         self.invoice_id = invoice_id 
         self.runner_id = runner_id 

@@ -1,5 +1,5 @@
 class InvoiceRunnerSchedule:
-    def __init__(self, id: int, runner_id: int, frequency: str, start_date: str):
+    def __init__(self, id: str, runner_id: str, frequency: str, start_date: str):
         self.id = id  
         self.runner_id = runner_id 
         self.frequency = frequency  
