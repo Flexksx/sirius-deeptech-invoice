@@ -195,52 +195,36 @@ def delete_client(client_id):
         abort(500, description=str(e))
 
 
-#TODO:
-@app.route("/clients/<int:client_id>/contracts", methods=["GET"])
+@app.route('/clients/<int:client_id>/contracts', methods=['GET'])
 def get_client_contracts(client_id):
     try:
-        # Retrieve the client by ID
-        client = db_session.query(Client).get(client_id)
+        # Retrieve all contracts for the specified client (as obligor or obligee)
+        contracts = db_session.query(Contract).filter(
+            (Contract.obligor_client_id == client_id) | 
+            (Contract.obligee_client_id == client_id)
+        ).all()
 
-        # Check if the client exists
-        if not client:
-            abort(404, description="Client not found")
-        
-        # Get all contracts associated with the client
-        contracts = client.obligor_contracts + client.obligee_contracts
+        if not contracts:
+            return jsonify({"message": "No contracts found for this client."}), 404
 
-        # Return the contracts as JSON
-        return jsonify([contract.__dict__ for contract in contracts]), 200
+        # Create a list of contracts to return
+        contract_list = []
+        for contract in contracts:
+            contract_list.append({
+                "id": contract.id,
+                "created_date": contract.created_date.strftime('%Y-%m-%d %H:%M:%S') if contract.created_date else None,
+                "updated_date": contract.updated_date.strftime('%Y-%m-%d %H:%M:%S') if contract.updated_date else None,
+                "obligor_client_id": contract.obligor_client_id,
+                "obligee_client_id": contract.obligee_client_id,
+                "text": contract.text,
+                "data": contract.data
+            })
+
+        return jsonify(contract_list), 200
 
     except SQLAlchemyError as e:
         db_session.rollback()
         abort(500, description=str(e))
-
-
-
-# POST (add) a new contract for a specific client
-@app.route("/clients/<int:client_id>/contracts", methods=["POST"])
-def add_contract_to_client(client_id):
-    client = db_session.query(Client).filter(Client.id == client_id).first()
-    if not client:
-        abort(404, description="Client not found")
-
-    try:
-        data = request.json
-        new_contract = Contract(
-            obligor_client_id=client_id,
-            obligee_client_id=data.get('obligee_client_id'),
-            text=data['text'],
-            face_value=data['face_value'],
-            created_date=datetime.now()
-        )
-        db_session.add(new_contract)
-        db_session.commit()
-        return jsonify(new_contract.__dict__), 201
-    except SQLAlchemyError as e:
-        db_session.rollback()
-        abort(500, description=str(e))
-
 
 if __name__ == "__main__":
     app.run(debug=True)
