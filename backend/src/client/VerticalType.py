@@ -1,6 +1,4 @@
-# model/VerticalType.py
 from enum import Enum
-
 
 class VerticalType(Enum):
     TECHNOLOGY = "Technology"

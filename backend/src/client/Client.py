@@ -1,4 +1,3 @@
-# model/Client.py
 from datetime import datetime
 from src.contract.Contract import Contract
 from src.client.CompanyType import CompanyType
