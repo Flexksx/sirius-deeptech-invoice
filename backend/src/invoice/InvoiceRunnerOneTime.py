@@ -1,5 +1,5 @@
 class InvoiceRunnerOneTime:
-    def __init__(self, id: int, runner_id: int, start_date: str):
+    def __init__(self, id: str, runner_id: str, start_date: str):
         self.id = id  
         self.runner_id = runner_id  
         self.start_date = start_date  
