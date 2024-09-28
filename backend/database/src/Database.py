@@ -17,6 +17,16 @@ class Database:
         self.conn.execute('PRAGMA foreign_keys = ON;')
         self.contract = DBContracts(self.conn)
 
+        initTablesPath = os.path.join(
+            os.path.dirname(__file__), 'sql/create_tables.sql')
+        dropTablesPath = os.path.join(
+            os.path.dirname(__file__), 'sql/drop_tables.sql')
+
+        self.queries = {
+            "init_tables": open(initTablesPath).read(),
+            "drop_tables": open(dropTablesPath).read()
+        }
+
     def log(self, message):
         currentTime = datetime.now()
         header = "[DATABASE]"
@@ -25,22 +35,20 @@ class Database:
     def __del__(self) -> None:
         self.conn.close()
 
-    def init_tables(self, conn, cursor):
+    def init_tables(self, conn=None, cursor=None):
         if conn is None:
             conn = self.conn
         if cursor is None:
             cursor = self.cursor
-        query = open('./sql/create_tables.sql', 'r').read()
-        cursor.executescript(query)
+        cursor.executescript(self.queries["init_tables"])
         conn.commit()
         self.log('Tables created successfully')
 
-    def drop_tables(self, conn, cursor):
+    def drop_tables(self, conn=None, cursor=None):
         if conn is None:
             conn = self.conn
         if cursor is None:
             cursor = self.cursor
-        query = open('./sql/drop_tables.sql', 'r').read()
-        cursor.executescript(query)
+        cursor.executescript(self.queries["drop_tables"])
         conn.commit()
         self.log('Tables dropped successfully')
