@@ -1,4 +1,4 @@
-from database import db_session, init_db, Base  # Absolute import from database
+from ... import db_session, init_db  # Use relative import to access db_session and init_db
 from database.models import Contract  # Import the Contract model
 
 # Create an instance of the Contract

@@ -1,13 +1,11 @@
 from flask import Flask, jsonify, request, abort
 from sqlalchemy.exc import SQLAlchemyError
-from backend import SessionLocal 
-from database.orm import Client, Contract  
+from database import Client, Contract, db_session  
 from datetime import datetime
 
 app = Flask(__name__)
 
-# Initialize database session
-db_session = SessionLocal()
+
 
 
 # GET all clients
