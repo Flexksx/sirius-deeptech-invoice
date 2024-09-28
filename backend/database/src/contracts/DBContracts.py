@@ -1,5 +1,6 @@
 import sqlite3
 import os
+import datetime
 
 
 class DBContracts:
@@ -14,7 +15,8 @@ class DBContracts:
 
     def log(self, message):
         header = "[DATABASE][CONTRACTS]"
-        print(f'{header} {message}')
+        currentTime = datetime.datetime.now()
+        print(f'{header} {currentTime} {message}')
 
     def get(self, id: str):
         cursor = self.conn.cursor()
