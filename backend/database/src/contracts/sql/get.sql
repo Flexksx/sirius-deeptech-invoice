@@ -1,0 +1,1 @@
+SELECT * FROM contracts WHERE id = $1;
