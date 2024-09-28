@@ -1,5 +1,5 @@
 from src import Contract
-from database import Database
+from backend import Database
 
 c = Contract('1')
 print(Contract)
