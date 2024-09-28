@@ -1,1 +1,1 @@
-from .PDFDecoder import PDFDecoder
+from .ContractDecoder import ContractDecoder
