@@ -30,7 +30,8 @@ def upload_files():
                 file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                 file.save(file_path)
                 saved_files.append(filename)
-        
+            else:
+                return jsonify({'error': 'File type not allowed'}), 400
         return jsonify({'message': 'Files successfully uploaded', 'files': saved_files}), 201
 
     except Exception as e:
