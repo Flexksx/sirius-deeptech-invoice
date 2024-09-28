@@ -18,8 +18,8 @@ class Database:
         self.contract = DBContracts(self.conn)
 
     def log(self, message):
-        header = "[DATABASE]"
         currentTime = datetime.now()
+        header = "[DATABASE]"
         print(f'{header} {currentTime} {message}')
 
     def __del__(self) -> None:
