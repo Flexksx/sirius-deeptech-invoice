@@ -1,51 +1,57 @@
-from flask import Flask, jsonify, request, abort
-from sqlalchemy.exc import SQLAlchemyError
-import os 
-import sys
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
-
-from database.models import Client, Contract
-from database import db_session
 from datetime import datetime
+from database import db_session
+from database.models import Client, Contract
+from flask import Flask, jsonify, request, abort, Blueprint
+from sqlalchemy.exc import SQLAlchemyError
+import os
+import sys
+sys.path.append(os.path.abspath(
+    os.path.join(os.path.dirname(__file__), '../..')))
 
-app = Flask(__name__)
+contracts_blueprint = Blueprint('contracts_blueprint', __name__)
 
-@app.route("/contracts", methods=["GET"])
+
+@contracts_blueprint.route("/contracts", methods=["GET"])
 def get_contracts():
     try:
         contracts = db_session.query(Contract).all()
         contract_list = []
         for contract in contracts:
             contract_dict = contract.__dict__.copy()
-            contract_dict.pop('_sa_instance_state', None)  # Remove the internal SQLAlchemy state
+            # Remove the internal SQLAlchemy state
+            contract_dict.pop('_sa_instance_state', None)
             contract_list.append(contract_dict)
         return jsonify(contract_list), 200
     except SQLAlchemyError as e:
         db_session.rollback()
         abort(500, description=str(e))
 
-@app.route("/contracts/<int:contract_id>", methods=["GET"])
+
+@contracts_blueprint.route("/contracts/<int:contract_id>", methods=["GET"])
 def get_contract_by_id(contract_id):
     try:
         contract = db_session.query(Contract).get(contract_id)
         if contract is None:
             abort(404, description="Contract not found")
-        
+
         contract_dict = contract.__dict__.copy()
-        contract_dict.pop('_sa_instance_state', None)  # Remove SQLAlchemy internal state
+        # Remove SQLAlchemy internal state
+        contract_dict.pop('_sa_instance_state', None)
 
         return jsonify(contract_dict), 200
     except SQLAlchemyError as e:
         db_session.rollback()
         abort(500, description=str(e))
 
-@app.route("/contracts", methods=["POST"])
+
+@contracts_blueprint.route("/contracts", methods=["POST"])
 def create_contract():
     try:
         data = request.json
 
         # Validate the required fields
-        required_fields = ['created_date', 'updated_date', 'obligor_client_id', 'obligee_client_id', 'text', 'data']
+        required_fields = ['created_date', 'updated_date',
+                           'obligor_client_id', 'obligee_client_id', 'text', 'data']
         if not all(field in data for field in required_fields):
             abort(400, description="Missing required fields")
 
@@ -65,14 +71,16 @@ def create_contract():
 
         # Prepare the response
         contract_dict = new_contract.__dict__.copy()
-        contract_dict.pop('_sa_instance_state', None)  # Remove SQLAlchemy internal state
+        # Remove SQLAlchemy internal state
+        contract_dict.pop('_sa_instance_state', None)
 
         return jsonify({"message": "Contract created successfully", "contract": contract_dict}), 201
     except SQLAlchemyError as e:
         db_session.rollback()
         abort(500, description=str(e))
 
-@app.route('/contracts/<int:contract_id>', methods=['PUT'])
+
+@contracts_blueprint.route('/contracts/<int:contract_id>', methods=['PUT'])
 def update_contract(contract_id):
     try:
         # Retrieve the contract by ID
@@ -86,9 +94,11 @@ def update_contract(contract_id):
 
         # Update the contract fields
         if 'created_date' in contract_data:
-            contract.created_date = datetime.strptime(contract_data['created_date'], '%Y-%m-%d')
+            contract.created_date = datetime.strptime(
+                contract_data['created_date'], '%Y-%m-%d')
         if 'updated_date' in contract_data:
-            contract.updated_date = datetime.strptime(contract_data['updated_date'], '%Y-%m-%d')
+            contract.updated_date = datetime.strptime(
+                contract_data['updated_date'], '%Y-%m-%d')
         if 'obligor_client_id' in contract_data:
             contract.obligor_client_id = contract_data['obligor_client_id']
         if 'obligee_client_id' in contract_data:
@@ -120,7 +130,7 @@ def update_contract(contract_id):
         abort(500, description=str(e))
 
 
-@app.route("/contracts/<int:id>", methods=["DELETE"])
+@contracts_blueprint.route("/contracts/<int:id>", methods=["DELETE"])
 def delete_contract(id):
     try:
         # Fetch the contract by ID
@@ -141,12 +151,12 @@ def delete_contract(id):
         abort(500, description=str(e))
 
 
-@app.route('/clients/<int:client_id>/contracts', methods=['GET'])
+@contracts_blueprint.route('/clients/<int:client_id>/contracts', methods=['GET'])
 def get_client_contracts(client_id):
     try:
         # Retrieve all contracts for the specified client (as obligor or obligee)
         contracts = db_session.query(Contract).filter(
-            (Contract.obligor_client_id == client_id) | 
+            (Contract.obligor_client_id == client_id) |
             (Contract.obligee_client_id == client_id)
         ).all()
 
@@ -171,6 +181,3 @@ def get_client_contracts(client_id):
     except SQLAlchemyError as e:
         db_session.rollback()
         abort(500, description=str(e))
-
-if __name__ == "__main__":
-    app.run(debug=True)

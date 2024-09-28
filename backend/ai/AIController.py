@@ -1,18 +1,18 @@
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Blueprint
 import os
-from pdf_decoder.ContractDecoder import ContractDecoder
+from .ContractDecoder import ContractDecoder
 
-app = Flask(__name__)
+ai_blueprint = Blueprint('ai_blueprint', __name__)
 
 UPLOAD_DIR_PATH = os.path.join(os.path.dirname(__file__), "./res")
-app.config['UPLOAD_FOLDER'] = UPLOAD_DIR_PATH
+
 
 if not os.path.exists(UPLOAD_DIR_PATH):
     os.makedirs(UPLOAD_DIR_PATH)
 
 
-@app.route('/upload', methods=['POST'])
+@ai_blueprint.route('/upload', methods=['POST'])
 def upload_files():
     try:
         if 'files' not in request.files:
@@ -26,7 +26,8 @@ def upload_files():
         for file in files:
             if file and allowed_file(file.filename):
                 filename = file.filename
-                file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                file_path = os.path.join(
+                    UPLOAD_DIR_PATH, filename)
                 file.save(file_path)
                 files_to_process.append(file_path)
             else:
@@ -61,4 +62,4 @@ def allowed_file(filename):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    ai_blueprint.run(debug=True)
