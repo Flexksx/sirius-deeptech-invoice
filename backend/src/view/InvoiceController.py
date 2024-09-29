@@ -19,16 +19,12 @@ def get_invoices():
         for invoice in invoices:
             print(invoice)
             invoice_dict = invoice.__dict__.copy()
-
-            # Remove SQLAlchemy internal state
             invoice_dict.pop('_sa_instance_state', None)
-
-            # Ensure datetime fields are valid or set to None
             if invoice_dict.get('created_date') == '':
                 invoice_dict['created_date'] = None
             if invoice_dict.get('due_date') == '':
                 invoice_dict['due_date'] = None
-
+            invoice_dict['due_period'] = str(invoice_dict['due_period'])
             invoice_list.append(invoice_dict)
 
         return jsonify(invoice_list), 200
@@ -47,6 +43,25 @@ def get_invoice_by_id(invoice_id):
         invoice_dict = invoice.__dict__.copy()
         # Remove SQLAlchemy internal state
         invoice_dict.pop('_sa_instance_state', None)
+        invoice_dict['due_period'] = str(invoice_dict['due_period'])
+
+        return jsonify(invoice_dict), 200
+    except SQLAlchemyError as e:
+        db_session.rollback()
+        abort(500, description=str(e))
+
+
+@invoices_blueprint.route("/invoices/<int:invoice_id>/html", methods=["GET"])
+def get_invoice_html_by_id(invoice_id):
+    try:
+        invoice = db_session.query(DueInvoice).get(invoice_id)
+        if invoice is None:
+            abort(404, description="Invoice not found")
+
+        invoice_dict = invoice.__dict__.copy()
+        # Remove SQLAlchemy internal state
+        invoice_dict.pop('_sa_instance_state', None)
+        invoice_dict['due_period'] = str(invoice_dict['due_period'])
 
         return jsonify(invoice_dict), 200
     except SQLAlchemyError as e:
