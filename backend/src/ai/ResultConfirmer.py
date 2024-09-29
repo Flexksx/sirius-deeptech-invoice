@@ -84,8 +84,8 @@ def process_contract(contract_data: dict):
     due_invoices = db_session.query(DueInvoice).filter(
         DueInvoice.invoice_type_id == first_invoice_type_id).all()
     first_due_invoice = due_invoices[0]
-
-    return jsonify({"message": "Contract created successfully", "html": first_due_invoice.html}), 200
+    html = first_due_invoice.html
+    return html
 
 
 def process_invoice_types(invoices_data: dict, contract_id: int):
