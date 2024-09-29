@@ -1,14 +1,23 @@
 <script>
     import {Search, Button} from 'flowbite-svelte';
-    import {SearchOutline, PlusOutline} from 'flowbite-svelte-icons';
+    import {SearchOutline, PlusOutline, FileCheckSolid} from 'flowbite-svelte-icons';
     import { slide } from 'svelte/transition';
     import { Dropzone } from 'flowbite-svelte';
     import ContractList from "../managing/ContractList.svelte";
     import {searchValue} from "../../routes/store.js";
     import { Modal } from 'flowbite-svelte';
     import {quintOut} from "svelte/easing";
+    export let setPage;
+
+    function handleClick(page) {
+        setPage(page);
+    }
 
     let defaultModal = false;
+
+    let updated = true;
+    let loading = false;
+
     let value = [];
     const dropHandle = (event) => {
         value = [];
@@ -40,8 +49,6 @@
         return files.length + " file(s) selected.";
     };
 
-    let visible = false;
-
 </script>
 
 <div in:slide={{duration: 100, easing: quintOut, axis: 'x' }} class="flex-1 overflow-y-auto flex flex-col min-h-0 m-5 lg:m-15 lg:p-10 md:p-5 sm:p-5 p-5 md:m-10 sm:m-5 bg-lightBlue rounded-2xl">
@@ -59,8 +66,13 @@
             </form>
         </div>
     </div>
+    <div>
+        <ContractList />
+    </div>
+</div>
 
-    {#if visible}
+<Modal title="Upload Contract" classHeader="bg-lightBlue" classBody="border-lightGray" classFooter="bg-lightBlue" classBackdrop="bg-lightGray" class="bg-darkBlue border-lightGray" size="lg" bind:open={defaultModal}>
+    {#if updated === false}
         <div class="mt-5 p-5 rounded-lg flex flex-col justify-center items-center" transition:slide>
             <Dropzone
                     class="bg-lightBlue hover:bg-darkBlue max-w-2xl"
@@ -68,48 +80,45 @@
                     on:drop={dropHandle}
                     on:dragover={(event) => {event.preventDefault();}}
                     on:change={handleChange}>
-                <svg aria-hidden="true" class="mb-3 w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
+                <svg aria-hidden="true" class="mb-3 w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
                 {#if value.length === 0}
-                    <p class="mb-2 text-sm text-white dark:text-white"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-                    <p class="text-xs text-white dark:text-white">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                    <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">DOCX, DOC, PDF or PNG/JPG</p>
                 {:else}
-                    <p class="text-white">{showFiles(value)}</p>
+                    <p>{showFiles(value)}</p>
                 {/if}
             </Dropzone>
-            <div class="mt-3 flex flex-1 gap-3">
-                <Button outline color="red">Cancel</Button>
+        </div>
+        <div class="flex justify-end space-x-2">
+            <Button outline color="red">Cancel</Button>
+            <Button outline>Confirm</Button>
+        </div>
+
+    {:else if loading}
+        <div class="flex justify-center items-center h-64">
+            <svg class="animate-spin h-16 w-16 text-primary-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.97 7.97 0 014 12H0c0 2.042.768 3.9 2.031 5.291l2-2z"></path>
+            </svg>
+        </div>
+
+    {:else}
+        <div class="flex justify-center items-center h-64 flex-col gap-10">
+            <div class="text-white font-main text-2xl">
+                Files Uploaded Successfully
+            </div>
+            <div class="bg-lightBlue rounded-full flex justify-center items-center w-32 h-32">
+                <FileCheckSolid class="color-primary w-20 h-20" />
+            </div>
+            <div>
                 <Button outline>Confirm</Button>
+                <Button on:click={() => setPage("dataeditor")} outline>Review</Button>
             </div>
         </div>
     {/if}
 
-    <div>
-        <ContractList />
-    </div>
-</div>
-
-<Modal title="Upload Contract" classHeader="bg-lightBlue" classBody="border-lightGray" classFooter="bg-lightBlue" classBackdrop="bg-lightGray" class="bg-darkBlue border-lightGray" size="lg" bind:open={defaultModal} autoclose>
-    <div class="mt-5 p-5 rounded-lg flex flex-col justify-center items-center" transition:slide>
-        <Dropzone
-                class="bg-lightBlue hover:bg-darkBlue max-w-2xl"
-                id="dropzone"
-                on:drop={dropHandle}
-                on:dragover={(event) => {event.preventDefault();}}
-                on:change={handleChange}>
-            <svg aria-hidden="true" class="mb-3 w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
-            {#if value.length === 0}
-                <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-                <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
-            {:else}
-                <p>{showFiles(value)}</p>
-            {/if}
-        </Dropzone>
-    </div>
-     <svelte:fragment slot="footer">
-         <Button outline color="red">Cancel</Button>
-         <Button outline>Confirm</Button>
-    </svelte:fragment>
 </Modal>
+
 
 <div class="absolute bottom-5 right-5">
     <Button

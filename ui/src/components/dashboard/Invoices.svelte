@@ -2,13 +2,17 @@
     import { Search, Button, Badge, Indicator } from 'flowbite-svelte';
     import { SearchOutline } from 'flowbite-svelte-icons';
     import { searchValue } from "../../routes/store.js";
-    import { companyInvoices } from "../../routes/store.js";
+    import { companyInvoices, companiesStore } from "../../routes/store.js";
     import { quintOut } from "svelte/easing";
     import { slide } from 'svelte/transition';
 
     const cap = (string) => {
         if (!string) return '';
         return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+    };
+
+    const icon = (companyName) => {
+        return $companiesStore.find(company => company.name === companyName);
     };
 </script>
 
@@ -29,15 +33,19 @@
 
     <div class="flex flex-col mt-5">
         <div class="flex p-4 rounded-lg mb-2 font-main text-white text-3xl">
-            <div class="font-semibold flex-1 text-primary-700">Company Name</div>
+            <div class="font-semibold flex-1 text-primary-700">Company</div>
             <div class="font-semibold flex-1 text-center text-primary-700">May 2024</div>
             <div class="font-semibold flex-1 text-center text-primary-700">June 2024</div>
             <div class="font-semibold flex-1 text-center text-primary-700">July 2024</div>
         </div>
 
         {#each $companyInvoices as company}
-            <div class="flex bg-darkBlue text-white p-4 rounded-lg shadow-md mb-2">
-                <h2 class="text-3xl font-semibold font-main text-white flex-1">{company.name}</h2>
+            <div class="flex bg-darkBlue text-white p-4 rounded-lg shadow-md mb-2 divide-x divide-lightGray">
+                <div class="flex flex-1 items-center gap-5">
+                    <img src={icon(company.name)?.icon} alt="Company Icon" class="w-12 h-12 rounded-full"/>
+                    <h2 class="text-3xl font-semibold font-main text-white flex-1">{company.name}</h2>
+                </div>
+
 
                 <div class="text-center flex-1">
                     {#each company.invoices.filter(invoice => invoice.month === 'May 2024') as invoice}

@@ -4,6 +4,14 @@
     import {Button} from "flowbite-svelte";
     import {filteredCompanies, companiesStore, searchValue} from "../../routes/store.js";
 
+    export let setPage;
+
+    export let currentPage;
+
+    function handleClick(page) {
+        setPage(page);
+    }
+
     $: $filteredCompanies = $companiesStore.filter(company =>
         company.name.toLowerCase().includes($searchValue)
     );
@@ -23,6 +31,10 @@
     const viewInvoices = (contractName) => {
         alert(`Viewing invoices for ${contractName}...`);
     };
+
+    function viewModal(id) {
+        console.log(id);
+    }
 </script>
 
 <div class="space-y-5 mt-10 font-main">
@@ -35,20 +47,20 @@
 
                 </div>
                 <div class="flex">
-                    <div class="flex gap-9 mr-20">
+                    <div class="flex mr-10 gap-10 justify-between">
                         <div class="flex-col">
-                            <div class="text-xl font-semibold text-gray-500">Pending: {company.invoices[0].pending}</div>
-                            <div class="text-xl font-semibold text-gray-500">Total: {company.invoices[0].sum} {company.invoices[0].currency}</div>
+                            <div class="text-xl font-semibold text-gray-500 font-mono">Pending: {company.invoices[0].pending}</div>
+                            <div class="text-xl font-semibold text-gray-500 font-mono">Total: {company.invoices[0].sum} {company.invoices[0].currency}</div>
                         </div>
 
                         <div class="flex-col">
-                            <div class="text-xl font-semibold text-red-500">Overdue: {company.invoices[2].overdue}</div>
-                            <div class="text-xl font-semibold text-red-500">Total: {company.invoices[2].sum} {company.invoices[2].currency}</div>
+                            <div class="text-xl font-semibold text-red-500 font-mono">Overdue: {company.invoices[2].overdue}</div>
+                            <div class="text-xl font-semibold text-red-500 font-mono">Total: {company.invoices[2].sum} {company.invoices[2].currency}</div>
                         </div>
 
                         <div class="flex-col">
-                            <div class="text-xl font-semibold text-green-500">Paid: {company.invoices[1].paid}</div>
-                            <div class="text-xl font-semibold text-green-500">Total: {company.invoices[1].sum} {company.invoices[1].currency}</div>
+                            <div class="text-xl font-semibold text-green-500 font-mono">Paid: {company.invoices[1].paid}</div>
+                            <div class="text-xl font-semibold text-green-500 font-mono">Total: {company.invoices[1].sum} {company.invoices[1].currency}</div>
                         </div>
                     </div>
 
@@ -63,7 +75,7 @@
             </div>
 
             {#if company.isOpen}
-                <div class="mt-4 p-4 bg-darkBlue rounded-lg border-2 border-primary-700" transition:slide>
+                <div class="mt-4 p-4 bg-darkBlue rounded-lg border-2 border-lightGray" transition:slide>
                     <div class="text-lg font-semibold text-white">Contracts for {company.name}</div>
                     <div class="space-y-4 mt-3">
                         {#each company.contracts as contract}
