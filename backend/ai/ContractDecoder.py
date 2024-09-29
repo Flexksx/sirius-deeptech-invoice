@@ -1,7 +1,7 @@
 from openai import OpenAI
 import json
 import os
-import dotenv
+# import dotenv
 from datetime import datetime
 import time
 
@@ -9,7 +9,7 @@ import time
 class ContractDecoder:
     def __init__(self):
         dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
-        dotenv.load_dotenv(dotenv_path)
+        # dotenv.load_dotenv(dotenv_path)
         api_key = os.getenv('OPENAI_API_KEY')
         self.assistant_id = os.getenv('DECODER_ASSISTANT_ID')
         self.client = OpenAI(api_key=api_key)
