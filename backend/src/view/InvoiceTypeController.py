@@ -31,6 +31,12 @@ def get_invoice_types():
 @invoice_type_blueprint.route('/invoice_type/<int:id>', methods=['GET'])
 def get_invoice_type(id):
     invoice_type = InvoiceType.query.get(id)
+    contract_associated = Contract.query.get(invoice_type.contract_id)
+    obligor_client = Client.query.get(contract_associated.obligor_client_id)
+    obligee_client = Client.query.get(contract_associated.obligee_client_id)
+    response = {
+
+    }
     return jsonify(invoice_type)
 
 

@@ -1,0 +1,102 @@
+from datetime import datetime
+from database import db_session
+from database.models import DueInvoice
+from flask import Flask, jsonify, request, abort, Blueprint
+from sqlalchemy.exc import SQLAlchemyError
+import os
+import sys
+sys.path.append(os.path.abspath(
+    os.path.join(os.path.dirname(__file__), '../..')))
+
+invoices_blueprint = Blueprint('invoices_blueprint', __name__)
+
+
+@invoices_blueprint.route("/invoices", methods=["GET"])
+def get_invoices():
+    try:
+        invoices = db_session.query(DueInvoice).all()
+        invoice_list = []
+        for invoice in invoices:
+            print(invoice)
+            invoice_dict = invoice.__dict__.copy()
+
+            # Remove SQLAlchemy internal state
+            invoice_dict.pop('_sa_instance_state', None)
+
+            # Ensure datetime fields are valid or set to None
+            if invoice_dict.get('created_date') == '':
+                invoice_dict['created_date'] = None
+            if invoice_dict.get('due_date') == '':
+                invoice_dict['due_date'] = None
+
+            invoice_list.append(invoice_dict)
+
+        return jsonify(invoice_list), 200
+    except SQLAlchemyError as e:
+        db_session.rollback()
+        abort(500, description=str(e))
+
+
+@invoices_blueprint.route("/invoices/<int:invoice_id>", methods=["GET"])
+def get_invoice_by_id(invoice_id):
+    try:
+        invoice = db_session.query(DueInvoice).get(invoice_id)
+        if invoice is None:
+            abort(404, description="Invoice not found")
+
+        invoice_dict = invoice.__dict__.copy()
+        # Remove SQLAlchemy internal state
+        invoice_dict.pop('_sa_instance_state', None)
+
+        return jsonify(invoice_dict), 200
+    except SQLAlchemyError as e:
+        db_session.rollback()
+        abort(500, description=str(e))
+
+
+@invoices_blueprint.route("/invoices", methods=["POST"])
+def create_invoice():
+    try:
+        data = request.json
+        required_fields = ['invoice_type_id', 'due_date']
+        if not all(field in data for field in required_fields):
+            abort(400, description="Missing required fields")
+
+        invoice_type_id = data.get('invoice_type_id')
+        if invoice_type_id is None:
+            abort(400, description="invoice_type_id is required")
+
+        due_date = data.get('due_date')
+        if due_date is None:
+            abort(400, description="due_date is required")
+        else:
+            due_date = datetime.strptime(due_date, '%d-%m-%Y')
+
+        created_date = data.get('created_date')
+
+        if created_date is None:
+            created_date = datetime.now()
+        else:
+            created_date = datetime.strptime(created_date, '%d-%m-%Y')
+
+        invoice_number = data.get('invoice_number')
+        description = data.get('description')
+        other_data = data.get('data')
+
+        # Create a new Invoice instance
+        new_invoice = DueInvoice(
+            invoice_type_id=invoice_type_id,
+            invoice_number=invoice_number,
+            created_date=created_date,
+            due_date=due_date,
+            description=description,
+            data=other_data
+        )
+        db_session.add(new_invoice)
+        db_session.commit()
+        invoice_dict = new_invoice.__dict__.copy()
+        invoice_dict.pop('_sa_instance_state', None)
+        return jsonify(invoice_dict), 201
+    except SQLAlchemyError as e:
+        db_session.rollback()
+        abort(500, description=str(e))
