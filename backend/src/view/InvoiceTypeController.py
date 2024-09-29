@@ -36,7 +36,13 @@ def get_invoice_type(id):
     contract_json.pop('_sa_instance_state', None)
 
     obligor_client = Client.query.get(contract_associated.obligor_client_id)
+    obligor_client_json = obligor_client.__dict__.copy()
+    obligor_client_json.pop('_sa_instance_state', None)
+
     obligee_client = Client.query.get(contract_associated.obligee_client_id)
+    obligee_client_json = obligee_client.__dict__.copy()
+    obligee_client_json.pop('_sa_instance_state', None)
+
     invoice_products = Product.query.filter_by(
         invoice_type_id=invoice_type.id).all()
     products = []
@@ -65,6 +71,8 @@ def get_invoice_type(id):
             "needed_starting_date": invoice_type.needed_starting_date,
             "products": products,
             "contract": contract_json,
+            "obligor": obligor_client_json,
+            "obligee": obligee_client_json,
             "due_invoices": due_invoices_list
         }
     }
