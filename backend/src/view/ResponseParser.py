@@ -1,12 +1,12 @@
 import os
 import sys
-import json
 from flask import Blueprint, request, jsonify, abort
-from datetime import datetime
+from datetime import datetime, timedelta
 from database import db_session
-from models import *
-# sys.path.append(os.path.abspath(
-#     os.path.join(os.path.dirname(__file__), '../..')))
+import json
+from database.models import *
+sys.path.append(os.path.abspath(
+    os.path.join(os.path.dirname(__file__), '../..')))
 
 
 def store_in_db(ai_response: dict = None):
@@ -85,6 +85,25 @@ def process_invoice_types(invoices_data: dict, contract_id: int):
 
     for product_data in products:
         process_product(product_data, invoice_type_id)
+
+
+def process_invoice(invoice_type_id: str, needed_starting_date: str):
+    invoice_type = db_session.query(InvoiceType).filter(
+        InvoiceType.id == invoice_type_id).first()
+    if invoice_type is None:
+        return jsonify({"message": "Invoice type not found"}), 404
+    if needed_starting_date:
+        needed_starting_date = datetime.strptime(
+            needed_starting_date, '%d-%m-%Y')
+    else:
+        needed_starting_date = datetime.now() + timedelta(weeks=1)
+
+    invoice = DueInvoice(
+        invoice_type_id=invoice_type_id,
+        created_date=datetime.now(),
+
+        due_date=needed_starting_date
+    )
 
 
 def process_term(term_data: dict, invoice_type_id: int):

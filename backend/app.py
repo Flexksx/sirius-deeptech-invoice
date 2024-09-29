@@ -3,6 +3,7 @@ from src.view.ClientController import clients_blueprint
 from src.view.ContractController import contracts_blueprint
 from src.view.InvoiceTypeController import invoice_type_blueprint
 from src.view.InvoiceController import invoices_blueprint
+
 # from ai.AIController import ai_blueprint
 app = Flask(__name__)
 
