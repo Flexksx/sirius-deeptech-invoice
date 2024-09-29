@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factură Fiscală</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 40px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            width: 800px;
+            background-color: #f8f8f8;
+            color: #333;
+        }
+        h1, h2, h3 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 30px;
+            color: #333;
+        }
+        .invoice-header, .invoice-footer, .invoice-details {
+            margin-bottom: 30px;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .invoice-header {
+            text-align: center;
+        }
+        .invoice-details {
+            display: flex;
+            justify-content: space-between;
+        }
+        .invoice-details div {
+            width: 45%;
+        }
+        .supplier, .client {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .supplier h2, .client h2 {
+            font-size: 18px;
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+        .supplier p, .client p {
+            margin: 5px 0;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            background-color: #fff;
+        }
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        table th {
+            background-color: #4CAF50;
+            color: #fff;
+            font-size: 16px;
+        }
+        table td {
+            font-size: 14px;
+        }
+        .total {
+            font-weight: bold;
+            font-size: 18px;
+            text-align: right;
+        }
+        .invoice-footer {
+            text-align: right;
+        }
+        .contract-details {
+            margin-top: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            background-color: #fff;
+            border-radius: 8px;
+        }
+        .contract-details pre {
+            background-color: #f1f1f1;
+            padding: 10px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="invoice-header">
+        <h1>Fiscal Invoice: "invoice_type.name"</h1>
+        <p>Data: <span id="invoice-date">Created Date : "invoice_type.created_date"</span></p>
+    </div>
+
+    <div class="invoice-details">
+        <div class="supplier">
+            <h2>Obligor:</h2>
+            <p><strong>"obligor.company_type", "obligor.name"</strong></p>
+            <p>Adress: "obligor.address"</p>
+            <p>IDNO: "obligor.idno"</p>
+            <p>Bank: "obligor.bank_name"</p>
+            <p>Obligor Address: "obligor.address"</p>
+            <p>Bank Code: "obligor.bank_code"</p>
+            <p>Bank Address: "obligor.bank_address"</p>
+            <p>Country: "obligor.country"</p>
+            <p>Created Date: "obligor.created_date"</p>
+            <p>Director First Name: "obligor.director_first_name"</p>
+            <p>Director Last Name: "obligor.director_last_name"</p>
+            <p>Email: "obligor.email"</p>
+            <p>Fiscal Code: "obligor.fiscal_code"</p>
+            <p>IBAN: "obligor.iban"</p>
+            <p>Phone: "obligor.phone"</p>
+            <p>TVA Code: "obligor.tva_code"</p>
+        </div>
+
+        <div class="client">
+            <h2>Obligee:</h2>
+            <p><strong>"name"</strong></p>
+            <p>Adress: "obligee.address",</p>
+            <p>Bank Adress: "obligee.bank_address"</p>
+            <p>Bank Code:"obligee.bank_code"</p>
+            <p>Bank Name: "obligee.bank_name"</p>
+            <p>Obligee Country "obligee.country"</p>
+            <p>Created Date: "obligee.created_date"</p>
+            <p>"obligee.director_first_name"</p>
+            <p>"obligee.director_last_name"</p>
+            <p>"obligee.email"</p>
+            <p>"obligee.fiscal_code"</p>
+            <p>"obligee.iban"</p>
+            <p>"obligee.idno"</p>
+            <p>"obligee.phone"</p>
+            <p>"obligee.tva_code"</p>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Monthly software services for invoicing</td>
+                <td>"products.price" "products.currency"</td>
+                <td>1</td>
+                <td>"products.price" "products.currency"</td>
+
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="invoice-footer">
+        <p class="total">Total: "products.price" "products.currency"</p>
+        <p>Notes: invoice_type.notes</p>
+    </div>
+
+    <div class="contract-details">
+        <h2>Contract</h2>
+        <p><strong>Name: "contract.name"</strong> </p>
+        <pre> contract.text </pre>
+    </div>
+
+</body>
+</html>

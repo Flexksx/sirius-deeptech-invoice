@@ -44,7 +44,7 @@
     {
       "name": "string",
       "frequency": "MONTHLY or WEEKLY or DAILY or YEARLY or ONCE",
-      "invoices_count": "int. if the frequency is ONCE, then this field is 1, otherwise describe how many invoices are needed",
+      "invoices_count": "int. if the frequency is ONCE, then this field is 1, otherwise describe how many invoices are needed. For example if the contract is for the period of a year and is set to send monthly invoices, then set the frequency to MONTH and the invoices_count to 12",
       "description": "string",
       "starting_date": "datetime, date when the first invoice is needed",
       "notes": "string",
