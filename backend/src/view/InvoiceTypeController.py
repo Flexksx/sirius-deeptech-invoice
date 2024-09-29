@@ -32,12 +32,43 @@ def get_invoice_types():
 def get_invoice_type(id):
     invoice_type = InvoiceType.query.get(id)
     contract_associated = Contract.query.get(invoice_type.contract_id)
+    contract_json = contract_associated.__dict__.copy()
+    contract_json.pop('_sa_instance_state', None)
+
     obligor_client = Client.query.get(contract_associated.obligor_client_id)
     obligee_client = Client.query.get(contract_associated.obligee_client_id)
-    response = {
+    invoice_products = Product.query.filter_by(
+        invoice_type_id=invoice_type.id).all()
+    products = []
+    for product in invoice_products:
+        product_json = product.__dict__.copy()
+        product_json.pop('_sa_instance_state', None)
+        product_json['unit'] = str(product_json['unit'])
+        products.append(product_json)
 
+    due_invoices = DueInvoice.query.filter_by(
+        invoice_type_id=invoice_type.id).all()
+    due_invoices_list = []
+    for due_invoice in due_invoices:
+        due_invoice_json = due_invoice.__dict__.copy()
+        due_invoice_json.pop('_sa_instance_state', None)
+        due_invoices_list.append(due_invoice_json)
+    response = {
+        "invoice_type": {
+            "id": invoice_type.id,
+            "name": invoice_type.name,
+            "notes": invoice_type.notes,
+            "created_date": invoice_type.created_date,
+            "description": invoice_type.description,
+            "frequency": str(invoice_type.frequency),
+            "invoices_count": invoice_type.invoices_count,
+            "needed_starting_date": invoice_type.needed_starting_date,
+            "products": products,
+            "contract": contract_json,
+            "due_invoices": due_invoices_list
+        }
     }
-    return jsonify(invoice_type)
+    return jsonify(response)
 
 
 @invoice_type_blueprint.route('/invoice_type', methods=['POST'])

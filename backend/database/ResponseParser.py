@@ -103,8 +103,15 @@ def process_product(product_data: dict, invoice_type_id: int):
     price = product_data.get("price")
     quantity = product_data.get("quantity")
     unit = product_data.get("unit")
-    product = Product(name, description, price, currency,
-                      quantity, unit, invoice_type_id)
+    product = Product(
+        name=name,
+        description=description,
+        price=price,
+        unit=unit,
+        currency=currency,
+        quantity=quantity,
+        invoice_type_id=invoice_type_id
+    )
     db_session.add(product)
     db_session.commit()
 
