@@ -29,11 +29,12 @@ class DueInvoice(Base):
             self.created_date = datetime.now()
         self.due_date = due_date
         self.invoice_type_id = invoice_type_id
+        self.issue_date = issue_date
         if not invoice_number:
-            invoice_number = f'INV-{self.due_date.strftime("%Y%m%d")}'
+            invoice_number = f'INV-{self.issue_date.strftime("%Y%m%d")}-{self.due_date.strftime("%Y%m%d")}-{
+                invoice_type_id}'
         self.invoice_number = invoice_number
         self.description = description
         self.data = data
-        self.issue_date = issue_date
         self.due_periods_count = due_periods_count
         self.due_period = due_period

@@ -1,21 +1,30 @@
 import os
 import sys
-from flask import Blueprint, request, jsonify, abort
 from datetime import datetime, timedelta
 from database import db_session
+from flask import jsonify, Flask, Blueprint, request
 import json
 from database.models import *
 sys.path.append(os.path.abspath(
     os.path.join(os.path.dirname(__file__), '../..')))
 
+result_confirmer_blueprint = Blueprint('result_confirmer_blueprint', __name__)
 
-def store_in_db(ai_response: dict = None):
+
+@result_confirmer_blueprint.route('/confirm', methods=['POST'])
+def store_in_db():
+    data = request.json
+    if data is None:
+        data = request.body
+    if data is None:
+        return jsonify({"message": "No data to store in database"})
+    ai_response = data.get("data")
+
     if ai_response is None:
         return jsonify({"message": "No data to store in database"})
 
-    data = ai_response.get("data")
-    for contract_data in data:
-        process_contract(contract_data.get("contract"))
+    for contract_data in ai_response:
+        return process_contract(contract_data.get("contract"))
 
 
 def process_contract(contract_data: dict):
@@ -38,6 +47,22 @@ def process_contract(contract_data: dict):
 
     needed_invoice_types = contract_data.get("needed_invoices")
 
+    existing_contract = db_session.query(Contract).filter(
+        Contract.name == contract_name,
+        Contract.created_date == contract_created_date,
+        Contract.obligee_client_id == contract_obligee.id,
+        Contract.obligor_client_id == contract_obligor.id,
+    ).first()
+
+    if existing_contract:
+        existing_obligee_name = existing_contract.obligee_client.name
+        existing_obligor_name = existing_contract.obligor_client.name
+        message = f"""Contract {contract_name} created on {contract_created_date} between {
+            existing_obligee_name} and {existing_obligor_name} already exists in the database"""
+
+        print(message)
+        return jsonify({"message": message}), 200
+
     # Create Contract instance with correct datetime object
     contract = Contract(
         name=contract_name,
@@ -51,6 +76,7 @@ def process_contract(contract_data: dict):
     db_session.commit()
     for invoice_data in needed_invoice_types:
         process_invoice_types(invoice_data, contract_id=contract.id)
+    return jsonify({"message": "Contract created successfully"}), 200
 
 
 def process_invoice_types(invoices_data: dict, contract_id: int):
@@ -86,24 +112,35 @@ def process_invoice_types(invoices_data: dict, contract_id: int):
     for product_data in products:
         process_product(product_data, invoice_type_id)
 
+    due_invoices = process_invoice(invoice_type_id, needed_starting_date)
+
 
 def process_invoice(invoice_type_id: str, needed_starting_date: str):
     invoice_type = db_session.query(InvoiceType).filter(
         InvoiceType.id == invoice_type_id).first()
     if invoice_type is None:
-        return jsonify({"message": "Invoice type not found"}), 404
-    if needed_starting_date:
-        needed_starting_date = datetime.strptime(
-            needed_starting_date, '%d-%m-%Y')
-    else:
+        print(f"Invoice type with id {invoice_type_id} not found")
+        return None
+    if not needed_starting_date:
         needed_starting_date = datetime.now() + timedelta(weeks=1)
 
-    invoice = DueInvoice(
-        invoice_type_id=invoice_type_id,
-        created_date=datetime.now(),
-
-        due_date=needed_starting_date
-    )
+    due_invoices = []
+    issue_date = needed_starting_date
+    for i in range(invoice_type.invoices_count):
+        due_date = issue_date + timedelta(weeks=4)
+        due_invoice = DueInvoice(
+            invoice_type_id=invoice_type_id, due_date=due_date, issue_date=issue_date)
+        existing_due_invoice = db_session.query(DueInvoice).filter(
+            DueInvoice.invoice_number == due_invoice.invoice_number).first()
+        if existing_due_invoice:
+            print(
+                f"Due invoice {due_invoice.invoice_number} already exists in the database")
+            continue
+        db_session.add(due_invoice)
+        db_session.commit()
+        due_invoices.append(due_invoice)
+        issue_date += timedelta(weeks=4)
+    return jsonify({"message": "Due invoices created successfully"}), 200
 
 
 def process_term(term_data: dict, invoice_type_id: int):

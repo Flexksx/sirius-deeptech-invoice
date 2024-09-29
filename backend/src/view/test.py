@@ -1,4 +1,4 @@
-from .ResponseParser import store_in_db
+from ..ai.ResultConfirmer import store_in_db
 import json
 import os
 
