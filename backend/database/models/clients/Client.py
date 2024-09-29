@@ -50,7 +50,7 @@ class Client(Base):
         self.country = country
         self.email = email
         self.phone = phone
-        self.data = data
+        self.data = data if data is not None else {}
 
     def __repr__(self):
         return f'<Client {self.id}>'

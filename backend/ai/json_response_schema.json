@@ -1,7 +1,7 @@
 {
   "created_date": "datetime",
   "name": "string",
-  "full_text_as_inline_markdown": "string, the full text of the document in markdown format",
+  "text": "string, the full text of the document in markdown format",
   "other_data": {},
   "description": "string",
   "obligor": {

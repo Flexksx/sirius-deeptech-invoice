@@ -1,9 +1,9 @@
-from database import init_db, db_session
-from models import *
+from ResponseParser import store_in_db
+import json
 
-u = Contract(created_date='2021-01-01', updated_date='2021-01-01',
-             obligor_client_id=1, obligee_client_id=2, text='text', data='data')
+example_file = "example.json"
+data = open(example_file, "r").read()
+json_data = json.loads(data)
+store_in_db(json_data)
 
-init_db()
-db_session.add(u)
-db_session.commit()
+print("Done")

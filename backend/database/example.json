@@ -1,0 +1,77 @@
+{
+  "data": [
+    {
+      "contract": {
+        "created_date": "15-01-2025",
+        "description": "Contract pentru prestarea de servicii software pentru facturare.",
+        "name": "Contract de Prestări Servicii Software",
+        "needed_invoices": [
+          {
+            "description": "Monthly invoice for software services provided.",
+            "frequency": "MONTHLY",
+            "invoices_count": 12,
+            "name": "Invoice for software services",
+            "notes": "Payment due by the 15th of the following month",
+            "starting_date": "01-02-2025",
+            "products": [
+              {
+                "currency": "USD",
+                "description": "Monthly software services for invoicing.",
+                "name": "Software Services",
+                "price": 2000.0,
+                "quantity": 1,
+                "unit": "MONTH"
+              }
+            ],
+            "terms": [
+              {
+                "description": "Payment must be made by the 15th of the month following the invoice date.",
+                "name": "Payment term",
+                "value": "15th of following month"
+              }
+            ]
+          }
+        ],
+        "obligee": {
+          "address": "Cluj-Napoca Str. Fabricii nr. 200",
+          "bank_address": "Raiffeisen Bank",
+          "bank_code": "RO98 RZBR 0000 4444 5555 66",
+          "company_type": "SRL",
+          "country": "Romania",
+          "director_first_name": "Elena",
+          "director_last_name": "Ionescu",
+          "email": null,
+          "fiscal_code": null,
+          "iban": null,
+          "idno": "RO87654321",
+          "name": "SC Industria DEF SRL",
+          "other_data": {},
+          "phone": null,
+          "tva_code": null,
+          "vertical": null
+        },
+        "obligor": {
+          "address": "București Str. Tehnologiei nr. 100",
+          "bank_address": "Banca Transilvania",
+          "bank_code": "RO12 BTRL 0000 1111 2222 33",
+          "company_type": "SRL",
+          "country": "Romania",
+          "director_first_name": "Andrei",
+          "director_last_name": "Popescu",
+          "email": null,
+          "fiscal_code": null,
+          "iban": null,
+          "idno": "RO12345678",
+          "name": "SC FacturaPlus SRL",
+          "other_data": {},
+          "phone": null,
+          "tva_code": null,
+          "vertical": null
+        },
+        "other_data": {},
+        "text": "## CONTRACT DE PRESTĂRI SERVICII SOFTWARE\nÎncheiat astăzi 15 ianuarie 2025 între:\n1. SC FacturaPlus SRL cu sediul în București Str. Tehnologiei nr. 100 înregistrată la Registrul Comerțului sub nr. J40/123456/2025 cod unic de înregistrare RO12345678 reprezentată legal prin dl. Andrei Popescu în calitate de Director General denumită în continuare \"Prestatorul\"  \nși  \n2. SC Industria DEF SRL cu sediul în Cluj-Napoca Str. Fabricii nr. 200 înregistrată la Registrul Comerțului sub nr. J12/654321/2025 cod unic de înregistrare RO87654321 reprezentată legal prin dna. Elena Ionescu în calitate de Administrator denumită în continuare \"Beneficiarul\"  \nau convenit următoarele:\n\n### Articolul 1 – Obiectul Contractului\nPrestatorul se obligă să furnizeze Beneficiarului servicii de software pentru facturare incluzând suport tehnic continuu și actualizări de funcționalități pe durata a 12 luni.\n\n### Articolul 2 – Durata Contractului\nContractul este valabil pentru o perioadă de 1 an începând cu data de 1 februarie 2025 și până la data de 31 ianuarie 2026.\n\n### Articolul 3 – Prețul și Modalitatea de Plată\n3.1. Valoarea totală a contractului este de 24.000 USD (douăzeci și patru de mii de dolari americani).  \n3.2. Plata se va efectua în 12 tranșe lunare egale de 2.000 USD fiecare reprezentând contravaloarea serviciilor prestate în luna respectivă.  \n3.3. Prestatorul va emite factura fiscală în ultima zi calendaristică a fiecărei luni.  \n3.4. Beneficiarul se obligă să efectueze plata facturii până cel târziu la data de 15 a lunii următoare emiterii facturii.\n\n### Articolul 4 – Obligațiile Prestatorului\n4.1. Să furnizeze serviciile de software conform specificațiilor agreate.  \n4.2. Să asigure suport tehnic și actualizări de funcționalități pe toată durata contractului.\n\n### Articolul 5 – Obligațiile Beneficiarului\n5.1. Să utilizeze software-ul conform termenilor și condițiilor stabilite.  \n5.2. Să efectueze plățile conform prevederilor prezentului contract.\n\n### Articolul 6 – Încetarea Contractului\n6.1. Nerespectarea obligațiilor contractuale de către oricare dintre părți dă dreptul celeilalte părți să rezilieze contractul cu un preaviz scris de 30 de zile.\n\n### Articolul 7 – Dispoziții Finale\n7.1. Modificările aduse prezentului contract se vor efectua numai prin acte adiționale semnate de ambele părți.  \n7.2. Prezentul contract a fost încheiat în două exemplare originale câte unul pentru fiecare parte."
+      }
+    }
+  ],
+  "status": "success"
+}
