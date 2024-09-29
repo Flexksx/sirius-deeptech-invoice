@@ -38,6 +38,6 @@
     {/if}
 
     {#if currentPage === 'dataeditor'}
-        <DataEditor />
+        <DataEditor {setPage} />
     {/if}
 </div>

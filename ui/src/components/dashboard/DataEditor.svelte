@@ -4,17 +4,18 @@
     import {quintOut} from "svelte/easing";
     import {slide} from "svelte/transition";
 
-    let tempData = JSON.stringify($editor, null, 2); // Hold a temporary copy for editing
+    export let setPage;
 
-    // Function to handle changes when input is made in the textarea
+    let tempData = JSON.stringify($editor, null, 2);
+
     function handleInput(event) {
         tempData = event.target.value;
     }
 
-    // Function to handle saving the changes
     function saveChanges() {
         try {
             $editor = JSON.parse(tempData);
+            setPage("contracts");
             alert("Changes saved!");
         } catch (e) {
             alert("Invalid JSON. Please correct the errors and try again.");
@@ -22,7 +23,7 @@
     }
 
     function cancelChanges() {
-        tempData = JSON.stringify($editor, null, 2); // Reset tempData
+        tempData = JSON.stringify($editor, null, 2);
     }
 </script>
 

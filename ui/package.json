@@ -34,6 +34,7 @@
 	"dependencies": {
 		"@layerstack/utils": "^0.0.4",
 		"apexcharts": "^3.4.0",
+		"axios": "^1.7.7",
 		"d3-array": "^3.2.4",
 		"d3-scale": "^4.0.2",
 		"date-fns": "^4.1.0",
