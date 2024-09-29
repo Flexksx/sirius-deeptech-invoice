@@ -1,14 +1,30 @@
+from flask import send_file
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 from database import db_session
+import io
 from database.models import DueInvoice
-from flask import Flask, jsonify, request, abort, Blueprint
+from flask import Flask, jsonify, request, abort, Blueprint, send_file
 from sqlalchemy.exc import SQLAlchemyError
+from pyppeteer import launch
+import asyncio
 import os
 import sys
 sys.path.append(os.path.abspath(
     os.path.join(os.path.dirname(__file__), '../..')))
 
 invoices_blueprint = Blueprint('invoices_blueprint', __name__)
+
+
+def generate_pdf(html):
+    pdf_file_path = './invoice.pdf'  # Specify your desired file path
+    pdf_file_path = os.path.join(os.path.dirname(__file__), pdf_file_path)
+    browser = launch()
+    page = browser.newPage()
+    page.setContent(html)
+    page.pdf({'path': pdf_file_path})  # Save PDF to the specified path
+    browser.close()
+    return pdf_file_path
 
 
 @invoices_blueprint.route("/invoices", methods=["GET"])
@@ -62,10 +78,39 @@ def get_invoice_html_by_id(invoice_id):
         # Remove SQLAlchemy internal state
         invoice_dict.pop('_sa_instance_state', None)
         invoice_dict['due_period'] = str(invoice_dict['due_period'])
-
-        return jsonify(invoice_dict), 200
+        result = {"html": invoice_dict['html']}
+        return jsonify(result), 200
     except SQLAlchemyError as e:
         db_session.rollback()
+        abort(500, description=str(e))
+
+
+@invoices_blueprint.route("/invoices/<int:invoice_id>/pdf", methods=["GET"])
+def get_invoice_pdf_by_id(invoice_id):
+    try:
+        invoice = db_session.query(DueInvoice).get(invoice_id)
+        if invoice is None:
+            abort(404, description="Invoice not found")
+
+        invoice_dict = invoice.__dict__.copy()
+        invoice_dict.pop('_sa_instance_state', None)
+        invoice_dict['due_period'] = str(invoice_dict['due_period'])
+        invoice_html = invoice_dict['html']
+
+        # Generate PDF synchronously using ThreadPoolExecutor
+        pdf_file_path = generate_pdf(invoice_html)
+
+        # Check if the PDF file was generated successfully
+        if not os.path.exists(pdf_file_path):
+            abort(500, description="PDF generation failed")
+
+        # Send the PDF as a response
+        return send_file(pdf_file_path, as_attachment=True, download_name='invoice.pdf', mimetype='application/pdf')
+
+    except SQLAlchemyError as e:
+        db_session.rollback()
+        abort(500, description=str(e))
+    except Exception as e:
         abort(500, description=str(e))
 
 
