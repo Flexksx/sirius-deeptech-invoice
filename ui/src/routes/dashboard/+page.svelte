@@ -4,6 +4,8 @@
     import Clients from "../../components/dashboard/Clients.svelte";
     import Invoices from "../../components/dashboard/Invoices.svelte";
     import Contracts from "../../components/dashboard/Contracts.svelte";
+    import Payments from "../../components/dashboard/Payments.svelte";
+    import DataEditor from "../../components/dashboard/DataEditor.svelte";
 
     let currentPage = 'dashboard';
 
@@ -20,7 +22,7 @@
     {/if}
 
     {#if currentPage === 'contracts'}
-        <Contracts />
+        <Contracts {currentPage} {setPage} />
     {/if}
 
     {#if currentPage === 'clients'}
@@ -29,5 +31,13 @@
 
     {#if currentPage === 'invoices'}
         <Invoices />
+    {/if}
+
+    {#if currentPage === 'payments'}
+        <Payments />
+    {/if}
+
+    {#if currentPage === 'dataeditor'}
+        <DataEditor />
     {/if}
 </div>

@@ -1,5 +1,70 @@
 import { writable } from 'svelte/store';
 
+export const editor = writable([{
+    "invoice_type": {
+        "contract": {
+            "created_date": "Wed, 15 Jan 2025 00:00:00 GMT",
+            "data": {},
+            "id": 1,
+            "name": "Contract de Prestări Servicii Software",
+            "obligee_client_id": 2,
+            "obligor_client_id": 3,
+            "text": "## CONTRACT DE PRESTĂRI SERVICII SOFTWARE\nÎncheiat astăzi 15 ianuarie 2025 între:\n1. SC FacturaPlus SRL cu sediul în București Str. Tehnologiei nr. 100 înregistrată la Registrul Comerțului sub nr. J40/123456/2025 cod unic de înregistrare RO12345678 reprezentată legal prin dl. Andrei Popescu în calitate de Director General denumită în continuare \"Prestatorul\"  \nși  \n2. SC Industria DEF SRL cu sediul în Cluj-Napoca Str. Fabricii nr. 200 înregistrată la Registrul Comerțului sub nr. J12/654321/2025 cod unic de înregistrare RO87654321 reprezentată legal prin dna. Elena Ionescu în calitate de Administrator denumită în continuare \"Beneficiarul\"  \nau convenit următoarele:\n\n### Articolul 1 – Obiectul Contractului\nPrestatorul se obligă să furnizeze Beneficiarului servicii de software pentru facturare incluzând suport tehnic continuu și actualizări de funcționalități pe durata a 12 luni.\n\n### Articolul 2 – Durata Contractului\nContractul este valabil pentru o perioadă de 1 an începând cu data de 1 februarie 2025 și până la data de 31 ianuarie 2026.\n\n### Articolul 3 – Prețul și Modalitatea de Plată\n3.1. Valoarea totală a contractului este de 24.000 USD (douăzeci și patru de mii de dolari americani).  \n3.2. Plata se va efectua în 12 tranșe lunare egale de 2.000 USD fiecare reprezentând contravaloarea serviciilor prestate în luna respectivă.  \n3.3. Prestatorul va emite factura fiscală în ultima zi calendaristică a fiecărei luni.  \n3.4. Beneficiarul se obligă să efectueze plata facturii până cel târziu la data de 15 a lunii următoare emiterii facturii.\n\n### Articolul 4 – Obligațiile Prestatorului\n4.1. Să furnizeze serviciile de software conform specificațiilor agreate.  \n4.2. Să asigure suport tehnic și actualizări de funcționalități pe toată durata contractului.\n\n### Articolul 5 – Obligațiile Beneficiarului\n5.1. Să utilizeze software-ul conform termenilor și condițiilor stabilite.  \n5.2. Să efectueze plățile conform prevederilor prezentului contract.\n\n### Articolul 6 – Încetarea Contractului\n6.1. Nerespectarea obligațiilor contractuale de către oricare dintre părți dă dreptul celeilalte părți să rezilieze contractul cu un preaviz scris de 30 de zile.\n\n### Articolul 7 – Dispoziții Finale\n7.1. Modificările aduse prezentului contract se vor efectua numai prin acte adiționale semnate de ambele părți.  \n7.2. Prezentul contract a fost încheiat în două exemplare originale câte unul pentru fiecare parte.",
+            "updated_date": "Sun, 29 Sep 2024 10:52:12 GMT"
+        },
+        "created_date": "Sun, 29 Sep 2024 10:52:12 GMT",
+        "description": "Monthly invoice for software services provided.",
+        "due_invoices": [
+            {
+                "created_date": "Sun, 29 Sep 2024 11:05:04 GMT",
+                "data": null,
+                "description": null,
+                "due_date": "Sun, 02 Feb 2025 00:00:00 GMT",
+                "id": 1,
+                "invoice_number": "INV-20250202",
+                "invoice_type_id": 1
+            },
+            {
+                "created_date": "Sun, 29 Sep 2024 11:05:04 GMT",
+                "data": null,
+                "description": null,
+                "due_date": "Sun, 02 Mar 2025 00:00:00 GMT",
+                "id": 2,
+                "invoice_number": "INV-20250302",
+                "invoice_type_id": 1
+            },
+            {
+                "created_date": "Sun, 29 Sep 2024 11:05:04 GMT",
+                "data": null,
+                "description": null,
+                "due_date": "Sun, 02 Mar 2025 00:00:00 GMT",
+                "id": 3,
+                "invoice_number": "INV-20250302",
+                "invoice_type_id": 1
+            }
+        ],
+        "frequency": "MONTHLY",
+        "id": 1,
+        "invoices_count": 12,
+        "name": "Invoice for software services",
+        "needed_starting_date": "Sat, 01 Feb 2025 00:00:00 GMT",
+        "notes": "Payment due by the 15th of the following month",
+        "products": [
+            {
+                "currency": "USD",
+                "description": "Monthly software services for invoicing.",
+                "id": 1,
+                "invoice_type_id": 1,
+                "name": "Software Services",
+                "price": 2000.0,
+                "quantity": 1,
+                "unit": "ProductUnit.MONTH"
+            }
+        ]
+    }
+}
+
+]);
 export const searchValue = writable([]);
 export const filteredCompanies = writable([]);
 
@@ -361,3 +426,70 @@ export const companyInvoices = writable([
         ]
     }
 ]);
+
+export const graphOptions = {
+    chart: {
+        height: '400px',
+        maxWidth: '100%',
+        type: 'area',
+        fontFamily: 'Inter, sans-serif',
+        dropShadow: {
+            enabled: false
+        },
+        toolbar: {
+            show: false
+        }
+    },
+    tooltip: {
+        enabled: true,
+        x: {
+            show: false
+        }
+    },
+    fill: {
+        type: 'gradient',
+        gradient: {
+            opacityFrom: 0.55,
+            opacityTo: 0,
+            shade: '#1C64F2',
+            gradientToColors: ['#1C64F2']
+        }
+    },
+    dataLabels: {
+        enabled: false
+    },
+    stroke: {
+        width: 6
+    },
+    grid: {
+        show: false,
+        strokeDashArray: 4,
+        padding: {
+            left: 2,
+            right: 2,
+            top: 0
+        }
+    },
+    series: [
+        {
+            name: 'New users',
+            data: [6500, 6418, 6456, 6526, 6356, 6456],
+            color: '#1A56DB'
+        }
+    ],
+    xaxis: {
+        categories: ['01 February', '02 February', '03 February', '04 February', '05 February', '06 February', '07 February'],
+        labels: {
+            show: false
+        },
+        axisBorder: {
+            show: false
+        },
+        axisTicks: {
+            show: false
+        }
+    },
+    yaxis: {
+        show: false
+    }
+};
