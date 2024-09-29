@@ -1,7 +1,7 @@
 {
   "created_date": "datetime",
   "name": "string",
-  "full_text_as_inline_markdown": "string",
+  "full_text_as_inline_markdown": "string, the full text of the document in markdown format",
   "other_data": {},
   "description": "string",
   "obligor": {
@@ -42,7 +42,7 @@
   },
   "needed_invoices": [
     {
-      "type": "ONE_TIME or MULTIPLE",
+      "name": "string",
       "frequency": "MONTHLY or WEEKLY or DAILY or YEARLY or ONCE",
       "invoices_count": "int. if the frequency is ONCE, then this field is 1, otherwise describe how many invoices are needed",
       "description": "string",
@@ -52,6 +52,7 @@
         {
           "name": "string",
           "price": "float",
+          "description": "string",
           "quantity": "int",
           "unit": "MONETARY or MONTH,DAY,WEEK,YEAR",
           "currency": "string in ISO 4217"

@@ -1,19 +1,20 @@
-from sqlalchemy import Column, Integer, String, Time, ForeignKey, JSON, Double
+from sqlalchemy import Column, Integer, String, Time, ForeignKey, JSON, Double, Enum
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from database import Base
+from .enums import ProductUnit
 
 
 class Product(Base):
     __tablename__ = 'products'
     id = Column(Integer, primary_key=True)
-    name = Column(String)
-    description = Column(String)
-    price = Column(Double)
-    unit = Column(String)
-    currency = Column(String)
+    name = Column(String, nullable=False)
+    description = Column(String, nullable=True)
+    price = Column(Double, nullable=False)
+    unit = Column(Enum(ProductUnit), nullable=False)
+    currency = Column(String, nullable=False)
 
-    def __init__(self, name, description, price, unit, currency):
+    def __init__(self, name: str, description: str, price: float, unit: ProductUnit, currency: str):
         self.name = name
         self.description = description
         self.price = price

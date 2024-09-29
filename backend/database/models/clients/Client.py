@@ -8,23 +8,23 @@ class Client(Base):
     __tablename__ = 'clients'
     id = Column(Integer, primary_key=True)
     name = Column(String)
-    idno = Column(String)
-    company_type = Column(String)
+    idno = Column(String, nullable=True)
+    company_type = Column(String, nullable=True)
     created_date = Column(DateTime)
-    vertical = Column(String)
-    address = Column(String)
-    bank_code = Column(String)
-    bank_name = Column(String)
-    bank_address = Column(String)
-    iban = Column(String)
-    tva_code = Column(String)
-    fiscal_code = Column(String)
-    director_first_name = Column(String)
-    director_last_name = Column(String)
-    country = Column(String)
-    email = Column(String)
-    phone = Column(String)
-    data = Column(JSON)
+    vertical = Column(String, nullable=True)
+    address = Column(String, nullable=True)
+    bank_code = Column(String, nullable=True)
+    bank_name = Column(String, nullable=True)
+    bank_address = Column(String, nullable=True)
+    iban = Column(String, nullable=True)
+    tva_code = Column(String, nullable=True)
+    fiscal_code = Column(String, nullable=True)
+    director_first_name = Column(String, nullable=True)
+    director_last_name = Column(String, nullable=True)
+    country = Column(String, nullable=True)
+    email = Column(String, nullable=True)
+    phone = Column(String, nullable=True)
+    data = Column(JSON, nullable=True)
 
     # Relații separate pentru obligor și obligee
     obligor_contracts = relationship(
@@ -32,7 +32,7 @@ class Client(Base):
     obligee_contracts = relationship(
         'Contract', back_populates='obligee_client', foreign_keys='Contract.obligee_client_id')
 
-    def __init__(self, name, idno, company_type, vertical, address, bank_code, bank_name, bank_address, iban, tva_code, fiscal_code, director_first_name, director_last_name, country, email, phone, data):
+    def __init__(self, name: str = None, idno: str = None, company_type: str = None, vertical: str = None, address: str = None, bank_code: str = None, bank_name: str = None, bank_address: str = None, iban: str = None, tva_code: str = None, fiscal_code: str = None, director_first_name: str = None, director_last_name: str = None, country: str = None, email: str = None, phone: str = None, data: dict = None):
         self.name = name
         self.idno = idno
         self.company_type = company_type

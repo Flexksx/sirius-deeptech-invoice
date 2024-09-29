@@ -8,11 +8,11 @@ class Contract(Base):
     __tablename__ = 'contracts'
     id = Column(Integer, primary_key=True)
     created_date = Column(DateTime)
-    updated_date = Column(DateTime)
+    updated_date = Column(DateTime, nullable=True)
     obligor_client_id = Column(Integer, ForeignKey('clients.id'))
     obligee_client_id = Column(Integer, ForeignKey('clients.id'))
-    text = Column(String)
-    data = Column(JSON)
+    text = Column(String, nullable=True)
+    data = Column(JSON, nullable=True)
 
     obligor_client = relationship(
         'Client', back_populates='obligor_contracts', foreign_keys=[obligor_client_id])
@@ -20,7 +20,7 @@ class Contract(Base):
         'Client', back_populates='obligee_contracts', foreign_keys=[obligee_client_id])
     invoice_types = relationship('InvoiceType', back_populates='contract')
 
-    def __init__(self, created_date=None, updated_date=None, obligor_client_id=None, obligee_client_id=None, text=None, data=None):
+    def __init__(self, created_date: datetime = None, updated_date: datetime = None, obligor_client_id: int = None, obligee_client_id: int = None, text: str = None, data: dict = None):
         if created_date is None:
             self.created_date = datetime.now()
         if updated_date is None:

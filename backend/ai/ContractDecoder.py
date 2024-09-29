@@ -23,36 +23,13 @@ class ContractDecoder:
     def decode_file(self, file_path):
         self.log(f'Started decoding file: {file_path}')
         file = self.__upload_file(file_path)
-        message = {
-            "role": "user",
-            "content": "Extract all data from this contract.",
-            "attachments": [
-                {
-                    "file_id": file.id,
-                    "tools": [{"type": "file_search"}]
-                }
-            ]
-        }
-        response = self.client.beta.threads.create_and_run(
-            assistant_id=self.assistant_id,
-            thread={
-                "messages": [
-                    message
-                ]
-            }
-        )
+        message = self.__create_decoding_message(file)
+        response = self.__create_thread_and_run(self.assistant_id, message)
+
         run_id = response.id
         thread_id = response.thread_id
-        self.log(f'Initiated run with ID: {run_id} on thread: {thread_id}')
-        run_status = self.__retrieve_run(run_id, thread_id)
-        while run_status != 'completed':
-            time.sleep(0.5)
-            self.log(f'Run {run_id} status: {run_status}')
-            run_status = self.__retrieve_run(run_id, thread_id)
-            if run_status == 'failed':
-                self.log(f'Run failed SUKA BLYAT')
-                return None
-        self.log(f'Run completed: {run_status}')
+
+        self.__await_run_completion(run_id, thread_id)
         last_message = self.__get_last_message(thread_id)
         self.log(f'Extracted answer: {last_message}')
         json_answer = json.loads(last_message)
@@ -71,6 +48,42 @@ class ContractDecoder:
             run_id=run_id
         )
         return run_retrieval.status
+
+    def __create_thread_and_run(self, assistant_id, message):
+        response = self.client.beta.threads.create_and_run(
+            assistant_id=assistant_id,
+            thread={
+                "messages": [
+                    message
+                ]
+            }
+        )
+        self.log(f'Initiated run with ID: {
+                 response.id} on thread: {response.thread_id}')
+        return response
+
+    def __await_run_completion(self, run_id, thread_id):
+        run_status = self.__retrieve_run(run_id, thread_id)
+        while run_status != 'completed':
+            time.sleep(0.75)
+            self.log(f'Run {run_id} status: {run_status}')
+            run_status = self.__retrieve_run(run_id, thread_id)
+            if run_status == 'failed':
+                self.log(f'Run failed SUKA BLYAT')
+                return None
+        self.log(f'Run completed: {run_status}')
+
+    def __create_decoding_message(self, file):
+        return {
+            "role": "user",
+            "content": "Extract all data from this contract.",
+            "attachments": [
+                {
+                    "file_id": file.id,
+                    "tools": [{"type": "file_search"}]
+                }
+            ]
+        }
 
     def __get_last_message(self, thread_id):
         thread_messages = self.client.beta.threads.messages.list(
