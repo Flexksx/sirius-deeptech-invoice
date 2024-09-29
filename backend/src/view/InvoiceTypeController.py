@@ -58,6 +58,7 @@ def get_invoice_type(id):
     for due_invoice in due_invoices:
         due_invoice_json = due_invoice.__dict__.copy()
         due_invoice_json.pop('_sa_instance_state', None)
+        due_invoice_json['due_period'] = str(due_invoice_json['due_period'])
         due_invoices_list.append(due_invoice_json)
     response = {
         "invoice_type": {
