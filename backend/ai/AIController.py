@@ -7,10 +7,8 @@ ai_blueprint = Blueprint('ai_blueprint', __name__)
 
 UPLOAD_DIR_PATH = os.path.join(os.path.dirname(__file__), "./res")
 
-
 if not os.path.exists(UPLOAD_DIR_PATH):
     os.makedirs(UPLOAD_DIR_PATH)
-
 
 @ai_blueprint.route('/upload', methods=['POST'])
 def upload_files():
