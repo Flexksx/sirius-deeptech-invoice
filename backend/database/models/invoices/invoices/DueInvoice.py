@@ -18,13 +18,14 @@ class DueInvoice(Base):
     due_date = Column(DateTime, nullable=False)
     description = Column(String, nullable=True)
     data = Column(JSON, nullable=True)
+    html = Column(String, nullable=True)
 
     invoice_type = relationship('InvoiceType', back_populates='due_invoices')
 
     run_records = relationship(
         'DueInvoiceRunRecord', back_populates='due_invoice')
 
-    def __init__(self, invoice_type_id: str = None, invoice_number: str = None, created_date=None, due_date=None, description=None, data=None, issue_date=None, due_periods_count=1, due_period=DueInvoicePeriod.MONTH):
+    def __init__(self, invoice_type_id: str = None, invoice_number: str = None, created_date=None, due_date=None, description=None, data=None, issue_date=None, due_periods_count=1, due_period=DueInvoicePeriod.MONTH, html: str = None):
         if created_date is None:
             self.created_date = datetime.now()
         self.due_date = due_date
@@ -38,3 +39,4 @@ class DueInvoice(Base):
         self.data = data
         self.due_periods_count = due_periods_count
         self.due_period = due_period
+        self.html = html

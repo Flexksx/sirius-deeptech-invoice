@@ -1,210 +1,240 @@
 <!DOCTYPE html>
 <html lang="ro">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Factură Fiscală</title>
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 40px;
-            padding: 20px;
-            border: 1px solid #ccc;
-            width: 800px;
-            background-color: #f8f8f8;
-            color: #333;
-        }
-        h1, h2, h3 {
-            text-align: center;
-            margin-bottom: 10px;
-        }
-        h1 {
-            font-size: 24px;
-            margin-bottom: 30px;
-            color: #333;
-        }
-        .invoice-header, .invoice-footer, .invoice-details {
-            margin-bottom: 30px;
-            padding: 10px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .invoice-header {
-            text-align: center;
-        }
-        .invoice-details {
-            display: flex;
-            justify-content: space-between;
-        }
-        .invoice-details div {
-            width: 45%;
-        }
-        .supplier, .client {
-            border: 1px solid #ddd;
-            padding: 20px;
-            border-radius: 8px;
-        }
-        .supplier h2, .client h2 {
-            font-size: 18px;
-            color: #4CAF50;
-            margin-bottom: 10px;
-        }
-        .supplier p, .client p {
-            margin: 5px 0;
-        }
-        table {
-            width: 100%;
-            margin-top: 20px;
-            border-collapse: collapse;
-            background-color: #fff;
-        }
-        table th, table td {
-            border: 1px solid #ddd;
-            padding: 12px;
-            text-align: left;
-        }
-        table th {
-            background-color: #4CAF50;
-            color: #fff;
-            font-size: 16px;
-        }
-        table td {
-            font-size: 14px;
-        }
-        .total {
-            font-weight: bold;
-            font-size: 18px;
-            text-align: right;
-        }
-        .invoice-footer {
-            text-align: right;
-        }
-        .contract-details {
-            margin-top: 30px;
-            padding: 20px;
-            border: 1px solid #ddd;
-            background-color: #fff;
-            border-radius: 8px;
-        }
-        .contract-details pre {
-            background-color: #f1f1f1;
-            padding: 10px;
-            font-family: monospace;
-            white-space: pre-wrap;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
+      body {
+        font-family: "Arial", sans-serif;
+        margin: 40px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        width: 800px;
+        background-color: #f8f8f8;
+        color: #333;
+      }
+      h1,
+      h2,
+      h3 {
+        text-align: center;
+        margin-bottom: 10px;
+      }
+      h1 {
+        font-size: 24px;
+        margin-bottom: 30px;
+        color: #333;
+      }
+      .invoice-header,
+      .invoice-footer,
+      .invoice-details {
+        margin-bottom: 30px;
+        padding: 10px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .invoice-header {
+        text-align: center;
+      }
+      .invoice-details {
+        display: flex;
+        justify-content: space-between;
+      }
+      .invoice-details div {
+        width: 45%;
+      }
+      .supplier,
+      .client {
+        border: 1px solid #ddd;
+        padding: 20px;
+        border-radius: 8px;
+      }
+      .supplier h2,
+      .client h2 {
+        font-size: 18px;
+        color: #4caf50;
+        margin-bottom: 10px;
+      }
+      .supplier p,
+      .client p {
+        margin: 5px 0;
+      }
+      table {
+        width: 100%;
+        margin-top: 20px;
+        border-collapse: collapse;
+        background-color: #fff;
+      }
+      table th,
+      table td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: left;
+      }
+      table th {
+        background-color: #4caf50;
+        color: #fff;
+        font-size: 16px;
+      }
+      table td {
+        font-size: 14px;
+      }
+      .total {
+        font-weight: bold;
+        font-size: 18px;
+        text-align: right;
+      }
+      .invoice-footer {
+        text-align: right;
+      }
+      .contract-details {
+        margin-top: 30px;
+        padding: 20px;
+        border: 1px solid #ddd;
+        background-color: #fff;
+        border-radius: 8px;
+      }
+      .contract-details pre {
+        background-color: #f1f1f1;
+        padding: 10px;
+        font-family: monospace;
+        white-space: pre-wrap;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
     </style>
-</head>
-<body>
-
+  </head>
+  <body>
     <div class="invoice-header">
-        <h1>Fiscal Invoice: Invoice for software services</h1>
-        <p>Data: <span id="invoice-date">Created Date: Sun, 29 Sep 2024 11:27:32 GMT</span></p>
+      <h1>Fiscal Invoice: INV-20251105-20251203-13</h1>
+      <p>Created Date: Sun, 29 Sep 2024 13:57:04 GMT</p>
+      <p>Issue Date: 2025-11-05 00:00:00</p>
+      <p>Due Date: 2025-12-03 00:00:00</p>
     </div>
 
     <div class="invoice-details">
-        <div class="supplier">
-            <h2>Obligor:</h2>
-            <p><strong>SRL, SC FacturaPlus SRL</strong></p>
-            <p>Adress: București Str. Tehnologiei nr. 100</p>
-            <p>IDNO: RO12345678</p>
-            <p>Bank: </p>
-            <p>Bank Code: RO12 BTRL 0000 1111 2222 33</p>
-            <p>Bank Address: Banca Transilvania</p>
-            <p>Country: Romania</p>
-            <p>Created Date: Sun, 29 Sep 2024 11:27:32 GMT</p>
-            <p>Director First Name: Andrei</p>
-            <p>Director Last Name: Popescu</p>
-            
-            
-            
-            
-            
-        </div>
+      <div class="supplier">
+        <h2>Obligor:</h2>
+        <p><strong>LLC, ABC Invoicing Solutions Inc.</strong></p>
+        <p>Address: 123 Financial Way Suite 100 Metropolis NY 10001</p>
 
-        <div class="client">
-            <h2>Obligee:</h2>
-            <p><strong>SC Industria DEF SRL</strong></p>
-            <p>Adress: Cluj-Napoca Str. Fabricii nr. 200</p>
-            <p>Bank Address: Raiffeisen Bank</p>
-            <p>Bank Code: RO98 RZBR 0000 4444 5555 66</p>
-            <p>Bank Name: </p>
-            <p>Obligee Country: Romania</p>
-            <p>Created Date: Sun, 29 Sep 2024 11:27:32 GMT</p>
-            <p>Director First Name: Elena</p>
-            <p>Director Last Name: Ionescu</p>
-            
-            
-            
-            <p>IDNO: RO87654321</p>
-            
-            
-        </div>
+        <p>Bank:</p>
+        <p>Bank Code: None</p>
+        <p>Bank Address: None</p>
+        <p>Country: United States</p>
+        <p>Created Date: Sun, 29 Sep 2024 13:41:36 GMT</p>
+        <p>Director First Name: John</p>
+        <p>Director Last Name: Doe</p>
+        <p>Email: billing@abcinvoicing.com</p>
+
+        <p>Phone: (555) 123-4567</p>
+      </div>
+
+      <div class="client">
+        <h2>Obligee:</h2>
+        <p><strong>JKL Enterprises LLC</strong></p>
+        <p>Address: 789 Commerce Street Industrial Park Metropolis NY 10002</p>
+        <p>Bank Address: None</p>
+        <p>Bank Code: None</p>
+        <p>Bank Name:</p>
+        <p>Obligee Country: United States</p>
+        <p>Created Date: Sun, 29 Sep 2024 13:41:36 GMT</p>
+        <p>Director First Name: Jane</p>
+        <p>Director Last Name: Smith</p>
+        <p>Email: jane.smith@jklenterprises.com</p>
+
+        <p>Phone: (555) 987-6543</p>
+      </div>
     </div>
 
     <table>
-        <thead>
-            <tr>
-                <th>Description</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Total</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Monthly software services for invoicing.</td>
-                <td>2000.0 USD</td>
-                <td>1</td>
-                <td>2000.0 USD</td>
-            </tr>
-        </tbody>
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Monthly invoicing software subscription.</td>
+          <td>1000.0 USD</td>
+          <td>1</td>
+          <td>1000.0 USD</td>
+        </tr>
+      </tbody>
     </table>
 
     <div class="invoice-footer">
-        <p class="total">Total: 2000.0 USD</p>
-        <p>Notes: Payment due by the 15th of the following month</p>
+      <p class="total">Total: 1000.0 USD</p>
+      <p>Notes: Invoices will be issued on the first day of each month.</p>
     </div>
 
     <div class="contract-details">
-        <h2>Contract</h2>
-        <p><strong>Name: Contract de Prestări Servicii Software</strong></p>
-        <pre>## CONTRACT DE PRESTĂRI SERVICII SOFTWARE
-Încheiat astăzi 15 ianuarie 2025 între:
-1. SC FacturaPlus SRL cu sediul în București Str. Tehnologiei nr. 100 înregistrată la Registrul Comerțului sub nr. J40/123456/2025 cod unic de înregistrare RO12345678 reprezentată legal prin dl. Andrei Popescu în calitate de Director General denumită în continuare "Prestatorul"  
-și  
-2. SC Industria DEF SRL cu sediul în Cluj-Napoca Str. Fabricii nr. 200 înregistrată la Registrul Comerțului sub nr. J12/654321/2025 cod unic de înregistrare RO87654321 reprezentată legal prin dna. Elena Ionescu în calitate de Administrator denumită în continuare "Beneficiarul"  
-au convenit următoarele:
+      <h2>Contract</h2>
+      <p><strong>Name: Service Agreement</strong></p>
+      <pre>
+SERVICE AGREEMENT
+Date: January 1 2025
+Between:
+1. ABC Invoicing Solutions Inc. Address: 123 Financial Way Suite 100 Metropolis NY 10001 Contact: (555) 123-4567 Represented by: John Doe CEO (hereinafter referred to as the "Provider")
+And
+2. JKL Enterprises LLC Address: 789 Commerce Street Industrial Park Metropolis NY 10002 Contact: (555) 987-6543 Represented by: Jane Smith COO (hereinafter referred to as the "Client")
 
-### Articolul 1 – Obiectul Contractului
-Prestatorul se obligă să furnizeze Beneficiarului servicii de software pentru facturare incluzând suport tehnic continuu și actualizări de funcționalități pe durata a 12 luni.
+1. Purpose of the Agreement
+The Provider agrees to supply and the Client agrees to purchase invoicing services and additional features as specified herein.
+2. Services Provided
+2.1 Base Subscription Service
+Monthly invoicing software subscription.
+2.2 Additional Services
+Automated Payment Reminders: Sends automatic reminders to clients regarding outstanding invoices.
+Advanced Analytics: Provides detailed reports and analytics on invoicing and payment patterns.
+3. Pricing and Payment Terms
+3.1 Pricing Structure
+Base Subscription Rate: $1000 per month.
+Automated Payment Reminders Multiplier: 20% of the base rate.
+Advanced Analytics Multiplier: 30% of the base rate.
+3.2 Billing Term
+"Billing rates shall be determined using a blended rate multiplicative model wherein the base subscription rate is multiplied by applicable service multipliers to calculate the total charge per billing unit."
+3.3 Payment Terms
+Invoices will be issued on the first day of each month.
+Payment is due within 15 days of the invoice date.
+Payments shall be made via electronic funds transfer to the account specified on the invoice.
+4. Term and Termination
+4.1 Term
+This Agreement commences on January 1 2025 and continues on a month-to-month basis until terminated by either party.
+4.2 Termination
+Either party may terminate this Agreement with 30 days' written notice.
+Upon termination the Client shall pay for all services rendered up to the termination date.
+5. Obligations of the Provider
+To supply the services outlined in Section 2 in a professional and timely manner.
+To provide technical support during normal business hours.
+6. Obligations of the Client
+To make timely payments as per the terms outlined in Section 3.
+To provide necessary information and access to enable the Provider to deliver the services.
+7. Confidentiality
+Both parties agree to keep confidential any proprietary information received from the other party during the term of this Agreement.
+8. Limitation of Liability
+The Provider's liability for any claim arising under this Agreement is limited to the amount paid by the Client in the preceding three months.
+9. Governing Law
+This Agreement shall be governed by and construed in accordance with the laws of the State of New York.
+10. Entire Agreement
+This Agreement constitutes the entire understanding between the parties and supersedes all prior agreements.
+11. Amendments
+Any amendments to this Agreement must be made in writing and signed by both parties.
 
-### Articolul 2 – Durata Contractului
-Contractul este valabil pentru o perioadă de 1 an începând cu data de 1 februarie 2025 și până la data de 31 ianuarie 2026.
+IN WITNESS WHEREOF the parties have executed this Agreement as of the date first written above.
+Provider: ABC Invoicing Solutions Inc.
+Address: 123 Financial Way Suite 100 Metropolis NY 10001 Contact: John Doe CEO Phone: (555) 123-4567 Email: billing@abcinvoicing.com
 
-### Articolul 3 – Prețul și Modalitatea de Plată
-3.1. Valoarea totală a contractului este de 24.000 USD (douăzeci și patru de mii de dolari americani).  
-3.2. Plata se va efectua în 12 tranșe lunare egale de 2.000 USD fiecare reprezentând contravaloarea serviciilor prestate în luna respectivă.  
-3.3. Prestatorul va emite factura fiscală în ultima zi calendaristică a fiecărei luni.  
-3.4. Beneficiarul se obligă să efectueze plata facturii până cel târziu la data de 15 a lunii următoare emiterii facturii.
+John Doe CEO
+Client: JKL Enterprises LLC
+Address: 789 Commerce Street Industrial Park Metropolis NY 10002 Contact: Jane Smith COO Phone: (555) 987-6543 Email: jane.smith@jklenterprises.com
 
-### Articolul 4 – Obligațiile Prestatorului
-4.1. Să furnizeze serviciile de software conform specificațiilor agreate.  
-4.2. Să asigure suport tehnic și actualizări de funcționalități pe toată durata contractului.
-
-### Articolul 5 – Obligațiile Beneficiarului
-5.1. Să utilizeze software-ul conform termenilor și condițiilor stabilite.  
-5.2. Să efectueze plățile conform prevederilor prezentului contract.
-
-### Articolul 6 – Încetarea Contractului
-6.1. Nerespectarea obligațiilor contractuale de către oricare dintre părți dă dreptul celeilalte părți să rezilieze contractul cu un preaviz scris de 30 de zile.
-
-### Articolul 7 – Dispoziții Finale
-7.1. Modificările aduse prezentului contract se vor efectua numai prin acte adiționale semnate de ambele părți.  
-7.2. Prezentul contract a fost încheiat în două exemplare originale câte unul pentru fiecare parte.</pre>
+Jane Smith COO</pre
+      >
     </div>
-
-</body>
+  </body>
 </html>

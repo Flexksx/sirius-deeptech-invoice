@@ -5,6 +5,7 @@ from database import db_session
 from flask import jsonify, Flask, Blueprint, request
 import json
 from database.models import *
+from .HTMLMapper import generate_html
 sys.path.append(os.path.abspath(
     os.path.join(os.path.dirname(__file__), '../..')))
 
@@ -54,14 +55,14 @@ def process_contract(contract_data: dict):
         Contract.obligor_client_id == contract_obligor.id,
     ).first()
 
-    if existing_contract:
-        existing_obligee_name = existing_contract.obligee_client.name
-        existing_obligor_name = existing_contract.obligor_client.name
-        message = f"""Contract {contract_name} created on {contract_created_date} between {
-            existing_obligee_name} and {existing_obligor_name} already exists in the database"""
+    # if existing_contract:
+    #     existing_obligee_name = existing_contract.obligee_client.name
+    #     existing_obligor_name = existing_contract.obligor_client.name
+    #     message = f"""Contract {contract_name} created on {contract_created_date} between {
+    #         existing_obligee_name} and {existing_obligor_name} already exists in the database"""
 
-        print(message)
-        return jsonify({"message": message}), 200
+    #     print(message)
+    #     return jsonify({"message": message}), 200
 
     # Create Contract instance with correct datetime object
     contract = Contract(
@@ -127,9 +128,73 @@ def process_invoice(invoice_type_id: str, needed_starting_date: str):
     due_invoices = []
     issue_date = needed_starting_date
     for i in range(invoice_type.invoices_count):
+
         due_date = issue_date + timedelta(weeks=4)
-        due_invoice = DueInvoice(
-            invoice_type_id=invoice_type_id, due_date=due_date, issue_date=issue_date)
+        invoice_name = f'INV-{issue_date.strftime("%Y%m%d")}-{due_date.strftime("%Y%m%d")}-{
+            invoice_type_id}'
+        data_needed_for_html = {
+            "invoice_type": {
+                "name": invoice_name,
+                "created_date": invoice_type.created_date.strftime("%a, %d %b %Y %H:%M:%S GMT"),
+                "notes": invoice_type.notes,
+                "due_date": due_date,
+                "issue_date": issue_date,
+                "obligor": {
+                    "name": invoice_type.contract.obligor_client.name,
+                    "address": invoice_type.contract.obligor_client.address,
+                    "company_type": invoice_type.contract.obligor_client.company_type,
+                    "idno": invoice_type.contract.obligor_client.idno,
+                    "bank_name": invoice_type.contract.obligor_client.bank_name,
+                    "bank_code": invoice_type.contract.obligor_client.bank_code,
+                    "bank_address": invoice_type.contract.obligor_client.bank_address,
+                    "country": invoice_type.contract.obligor_client.country,
+                    "created_date": invoice_type.contract.obligor_client.created_date.strftime('%a, %d %b %Y %H:%M:%S GMT'),
+                    "director_first_name": invoice_type.contract.obligor_client.director_first_name,
+                    "director_last_name": invoice_type.contract.obligor_client.director_last_name,
+                    "email": invoice_type.contract.obligor_client.email,
+                    "fiscal_code": invoice_type.contract.obligor_client.fiscal_code,
+                    "iban": invoice_type.contract.obligor_client.iban,
+                    "phone": invoice_type.contract.obligor_client.phone,
+                    "tva_code": invoice_type.contract.obligor_client.tva_code
+                },
+                "obligee": {
+                    "name": invoice_type.contract.obligee_client.name,
+                    "address": invoice_type.contract.obligee_client.address,
+                    "company_type": invoice_type.contract.obligee_client.company_type,
+                    "idno": invoice_type.contract.obligee_client.idno,
+                    "bank_name": invoice_type.contract.obligee_client.bank_name,
+                    "bank_code": invoice_type.contract.obligee_client.bank_code,
+                    "bank_address": invoice_type.contract.obligee_client.bank_address,
+                    "country": invoice_type.contract.obligee_client.country,
+                    "created_date": invoice_type.contract.obligee_client.created_date.strftime('%a, %d %b %Y %H:%M:%S GMT'),
+                    "director_first_name": invoice_type.contract.obligee_client.director_first_name,
+                    "director_last_name": invoice_type.contract.obligee_client.director_last_name,
+                    "email": invoice_type.contract.obligee_client.email,
+                    "fiscal_code": invoice_type.contract.obligee_client.fiscal_code,
+                    "iban": invoice_type.contract.obligee_client.iban,
+                    "phone": invoice_type.contract.obligee_client.phone,
+                    "tva_code": invoice_type.contract.obligee_client.tva_code
+                },
+                "contract": {
+                    "name": invoice_type.contract.name,
+                    "text": invoice_type.contract.text,
+                    "created_date": invoice_type.contract.created_date.strftime('%a, %d %b %Y %H:%M:%S GMT')
+                },
+                "products": [
+                    {
+                        "description": product.description,
+                        "price": product.price,
+                        "quantity": product.quantity,
+                        "currency": product.currency,
+                        "total": product.price * product.quantity
+                    } for product in invoice_type.products
+                ]
+            }
+        }
+
+        html = generate_html(data_needed_for_html)
+        due_invoice = DueInvoice(invoice_number=invoice_name,
+                                 invoice_type_id=invoice_type_id, due_date=due_date, issue_date=issue_date, html=html)
         existing_due_invoice = db_session.query(DueInvoice).filter(
             DueInvoice.invoice_number == due_invoice.invoice_number).first()
         if existing_due_invoice:

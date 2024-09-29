@@ -1,7 +1,6 @@
 import json
 import os
 
-# Load the HTML template as a string
 html_template = """<!DOCTYPE html>
 <html lang="ro">
 <head>
@@ -105,14 +104,16 @@ html_template = """<!DOCTYPE html>
 
     <div class="invoice-header">
         <h1>Fiscal Invoice: {invoice_name}</h1>
-        <p>Data: <span id="invoice-date">Created Date: {created_date}</span></p>
+        <p>Created Date: {created_date}</p>
+        <p>Issue Date: {issue_date}</p>
+        <p>Due Date: {due_date}</p>
     </div>
 
     <div class="invoice-details">
         <div class="supplier">
             <h2>Obligor:</h2>
             <p><strong>{obligor_company_type}, {obligor_name}</strong></p>
-            <p>Adress: {obligor_address}</p>
+            <p>Address: {obligor_address}</p>
             {obligor_idno}
             <p>Bank: {obligor_bank_name}</p>
             <p>Bank Code: {obligor_bank_code}</p>
@@ -131,7 +132,7 @@ html_template = """<!DOCTYPE html>
         <div class="client">
             <h2>Obligee:</h2>
             <p><strong>{obligee_name}</strong></p>
-            <p>Adress: {obligee_address}</p>
+            <p>Address: {obligee_address}</p>
             <p>Bank Address: {obligee_bank_address}</p>
             <p>Bank Code: {obligee_bank_code}</p>
             <p>Bank Name: {obligee_bank_name}</p>
@@ -189,9 +190,13 @@ def generate_html(invoice_get_response):
     obligee_data = invoice_data['obligee']
     contract_data = invoice_data['contract']
     product_data = invoice_data['products'][0]
+
+    # Assuming the dates are available in invoice_data['issue_date'] and invoice_data['due_date']
     html_output = html_template.format(
         invoice_name=invoice_data['name'],
         created_date=invoice_data['created_date'],
+        issue_date=invoice_data['issue_date'],  # New field for Issue Date
+        due_date=invoice_data['due_date'],      # New field for Due Date
         obligor_company_type=obligor_data['company_type'],
         obligor_name=obligor_data['name'],
         obligor_address=obligor_data['address'],
@@ -218,8 +223,7 @@ def generate_html(invoice_get_response):
         obligee_address=obligee_data['address'],
         obligee_bank_address=obligee_data['bank_address'],
         obligee_bank_code=obligee_data['bank_code'],
-        obligee_bank_name=obligee_data['bank_name'] if obligee_data.get(
-            'bank_name') else '',
+        obligee_bank_name=obligee_data['bank_name'] if obligee_data['bank_name'] else '',
         obligee_country=obligee_data['country'],
         obligee_created_date=obligee_data['created_date'],
         obligee_director_first_name=obligee_data['director_first_name'],
@@ -239,13 +243,13 @@ def generate_html(invoice_get_response):
         product_description=product_data['description'],
         product_price=product_data['price'],
         product_quantity=product_data['quantity'],
-        product_total=product_data['price'] * product_data['quantity'],
+        product_total=product_data['total'],
         product_currency=product_data['currency'],
         invoice_notes=invoice_data['notes'],
         contract_name=contract_data['name'],
         contract_text=contract_data['text']
     )
-    print("HTML generated")
+
     return html_output
 
 
