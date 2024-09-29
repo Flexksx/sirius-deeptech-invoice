@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factură Fiscală</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 40px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            width: 800px;
+            background-color: #f8f8f8;
+            color: #333;
+        }
+        h1, h2, h3 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 30px;
+            color: #333;
+        }
+        .invoice-header, .invoice-footer, .invoice-details {
+            margin-bottom: 30px;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .invoice-header {
+            text-align: center;
+        }
+        .invoice-details {
+            display: flex;
+            justify-content: space-between;
+        }
+        .invoice-details div {
+            width: 45%;
+        }
+        .supplier, .client {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .supplier h2, .client h2 {
+            font-size: 18px;
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+        .supplier p, .client p {
+            margin: 5px 0;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            background-color: #fff;
+        }
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        table th {
+            background-color: #4CAF50;
+            color: #fff;
+            font-size: 16px;
+        }
+        table td {
+            font-size: 14px;
+        }
+        .total {
+            font-weight: bold;
+            font-size: 18px;
+            text-align: right;
+        }
+        .invoice-footer {
+            text-align: right;
+        }
+        .contract-details {
+            margin-top: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            background-color: #fff;
+            border-radius: 8px;
+        }
+        .contract-details pre {
+            background-color: #f1f1f1;
+            padding: 10px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="invoice-header">
+        <h1>Factura Fiscală</h1>
+        <p><strong id="invoice-number"></strong></p>
+        <p>Data: <span id="invoice-date"></span></p>
+    </div>
+
+    <div class="invoice-details">
+        <div class="supplier">
+            <h2>Furnizor (Vânzător):</h2>
+            <p><strong id="supplier-name"></strong></p>
+            <p id="supplier-address"></p>
+            <p>IDNO: <span id="supplier-id"></span></p>
+            <p>Bancă: <span id="supplier-bank"></span></p>
+            <p>Cod bancar: <span id="supplier-bank-code"></span></p>
+        </div>
+
+        <div class="client">
+            <h2>Client (Cumpărător):</h2>
+            <p><strong id="client-name"></strong></p>
+            <p id="client-address"></p>
+            <p>IDNO: <span id="client-id"></span></p>
+            <p>Bancă: <span id="client-bank"></span></p>
+            <p>Cod bancar: <span id="client-bank-code"></span></p>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Descriere</th>
+                <th>Preț</th>
+                <th>Cantitate</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody id="invoice-items">
+            <!-- Invoice items will be injected here -->
+        </tbody>
+    </table>
+
+    <div class="invoice-footer">
+        <p class="total">Total: <span id="total-amount"></span></p>
+        <p>Notă: Plata se va efectua până la data de 15 a lunii următoare emiterii facturii.</p>
+    </div>
+
+    <div class="contract-details">
+        <h2>Contract</h2>
+        <p><strong>Nume:</strong> <span id="contract-name"></span></p>
+        <pre id="contract-text"></pre>
+    </div>
+
+    <script>
+        // Sample JSON data
+        const invoiceData = {
+            "invoice_type": {
+                "contract": {
+                    "created_date": "Wed, 15 Jan 2025 00:00:00 GMT",
+                    "name": "Contract de Prestări Servicii Software",
+                    "text": "## CONTRACT DE PRESTĂRI SERVICII SOFTWARE\nÎncheiat astăzi 15 ianuarie 2025 între:\n1. SC FacturaPlus SRL cu sediul în București Str. Tehnologiei nr. 100...",
+                }
+            },
+            "invoice_number": "INV-20250202",
+            "invoice_date": "07 septembrie 2024",
+            "supplier": {
+                "name": "SC FacturaPlus SRL",
+                "address": "București Str. Tehnologiei nr. 100",
+                "id": "RO12345678",
+                "bank": "Banca Transilvania",
+                "bank_code": "RO12 BTRL 0000 1111 2222 33"
+            },
+            "client": {
+                "name": "SC Industria DEF SRL",
+                "address": "Cluj-Napoca Str. Fabricii nr. 200",
+                "id": "RO87654321",
+                "bank": "Raiffeisen Bank",
+                "bank_code": "RO98 RZBR 0000 4444 5555 66"
+            },
+            "items": [
+                {
+                    "description": "Servicii software lunare pentru facturare",
+                    "price": "2000 USD",
+                    "quantity": 1,
+                    "total": "2000 USD"
+                }
+            ],
+            "total_amount": "2000 USD"
+        };
+
+        // Injecting the values from JSON into HTML
+        document.getElementById("invoice-number").innerText = invoiceData.invoice_number;
+        document.getElementById("invoice-date").innerText = invoiceData.invoice_date;
+
+        document.getElementById("supplier-name").innerText = invoiceData.supplier.name;
+        document.getElementById("supplier-address").innerText = invoiceData.supplier.address;
+        document.getElementById("supplier-id").innerText = invoiceData.supplier.id;
+        document.getElementById("supplier-bank").innerText = invoiceData.supplier.bank;
+        document.getElementById("supplier-bank-code").innerText = invoiceData.supplier.bank_code;
+
+        document.getElementById("client-name").innerText = invoiceData.client.name;
+        document.getElementById("client-address").innerText = invoiceData.client.address;
+        document.getElementById("client-id").innerText = invoiceData.client.id;
+        document.getElementById("client-bank").innerText = invoiceData.client.bank;
+        document.getElementById("client-bank-code").innerText = invoiceData.client.bank_code;
+
+        const items = invoiceData.items.map(item => `
+            <tr>
+                <td>${item.description}</td>
+                <td>${item.price}</td>
+                <td>${item.quantity}</td>
+                <td>${item.total}</td>
+            </tr>
+        `).join('');
+        document.getElementById("invoice-items").innerHTML = items;
+
+        document.getElementById("total-amount").innerText = invoiceData.total_amount;
+
+        document.getElementById("contract-name").innerText = invoiceData.invoice_type.contract.name;
+        document.getElementById("contract-text").innerText = invoiceData.invoice_type.contract.text;
+    </script>
+
+</body>
+</html>
