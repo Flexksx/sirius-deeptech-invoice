@@ -1,0 +1,11 @@
+{
+  "python.analysis.typeCheckingMode": "off",
+  "python.pythonPath": "/Users/cristiancretu/Documents/Code/GitHub/sirius-deeptech-invoice/backend/venv/bin/python3",
+  "python.autoComplete.extraPaths": [
+    "/Users/cristiancretu/Documents/Code/GitHub/sirius-deeptech-invoice/backend"
+  ],
+  "editor.formatOnSave": true,
+  "python.analysis.extraPaths": [
+    "/Users/cristiancretu/Documents/Code/GitHub/sirius-deeptech-invoice/backend"
+  ]
+}
