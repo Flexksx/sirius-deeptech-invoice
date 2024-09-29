@@ -1,0 +1,69 @@
+{
+  "created_date": "datetime",
+  "name": "string",
+  "full_text_as_inline_markdown": "string",
+  "other_data": {},
+  "description": "string",
+  "obligor": {
+    "name": "string",
+    "idno": "string",
+    "address": "string",
+    "phone": "string",
+    "email": "string",
+    "company_type": "string, SRL or II or other",
+    "tva_code": "string",
+    "bank_code": "string",
+    "bank_address": "string",
+    "iban": "string",
+    "fiscal_code": "string",
+    "director_last_name": "string",
+    "director_first_name": "string",
+    "country": "string",
+    "vertical": "string",
+    "other_data": {}
+  },
+  "obligee": {
+    "name": "string",
+    "idno": "string",
+    "address": "string",
+    "phone": "string",
+    "email": "string",
+    "company_type": "string, SRL or II or other",
+    "tva_code": "string",
+    "bank_code": "string",
+    "bank_address": "string",
+    "iban": "string",
+    "fiscal_code": "string",
+    "director_last_name": "string",
+    "director_first_name": "string",
+    "country": "string",
+    "vertical": "string",
+    "other_data": {}
+  },
+  "needed_invoices": [
+    {
+      "type": "ONE_TIME or MULTIPLE",
+      "frequency": "MONTHLY or WEEKLY or DAILY or YEARLY or ONCE",
+      "invoices_count": "int. if the frequency is ONCE, then this field is 1, otherwise describe how many invoices are needed",
+      "description": "string",
+      "starting_date": "datetime, date when the first invoice is needed",
+      "notes": "string",
+      "products": [
+        {
+          "name": "string",
+          "price": "float",
+          "quantity": "int",
+          "unit": "MONETARY or MONTH,DAY,WEEK,YEAR",
+          "currency": "string in ISO 4217"
+        }
+      ],
+      "terms": [
+        {
+          "name": "string",
+          "description": "string",
+          "value": "string"
+        }
+      ]
+    }
+  ]
+}

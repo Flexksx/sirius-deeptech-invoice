@@ -1,0 +1,152 @@
+{
+  "data": [
+    {
+      "contract": {
+        "created_date": "15-01-2025",
+        "description": "Furnizarea de servicii de software pentru facturare pe o perioadă de 12 luni.",
+        "full_text_as_inline_markdown": "CONTRACT DE PRESTĂRI SERVICII SOFTWARE\nÎncheiat astăzi 15 ianuarie 2025 între:\n1. SC FacturaPlus SRL cu sediul în București Str. Tehnologiei nr. 100 înregistrată la Registrul Comerțului sub nr. J40/123456/2025 cod unic de înregistrare RO12345678 reprezentată legal prin dl. Andrei Popescu în calitate de Director General denumită în continuare \"Prestatorul\"\nși\n2. SC Industria DEF SRL cu sediul în Cluj-Napoca Str. Fabricii nr. 200 înregistrată la Registrul Comerțului sub nr. J12/654321/2025 cod unic de înregistrare RO87654321 reprezentată legal prin dna. Elena Ionescu în calitate de Administrator denumită în continuare \"Beneficiarul\"\nau convenit următoarele:\nArticolul 1 – Obiectul Contractului\nPrestatorul se obligă să furnizeze Beneficiarului servicii de software pentru facturare incluzând suport tehnic continuu și actualizări de funcționalități pe durata a 12 luni.\nArticolul 2 – Durata Contractului\nContractul este valabil pentru o perioadă de 1 an începând cu data de 1 februarie 2025 și până la data de 31 ianuarie 2026.\nArticolul 3 – Prețul și Modalitatea de Plată\n3.1. Valoarea totală a contractului este de 24.000 USD (douăzeci și patru de mii de dolari americani).\n3.2. Plata se va efectua în 12 tranșe lunare egale de 2.000 USD fiecare reprezentând contravaloarea serviciilor prestate în luna respectivă.\n3.3. Prestatorul va emite factura fiscală în ultima zi calendaristică a fiecărei luni.\n3.4. Beneficiarul se obligă să efectueze plata facturii până cel târziu la data de 15 a lunii următoare emiterii facturii.\nArticolul 4 – Obligațiile Prestatorului\n4.1. Să furnizeze serviciile de software conform specificațiilor agreate.\n4.2. Să asigure suport tehnic și actualizări de funcționalități pe toată durata contractului.\nArticolul 5 – Obligațiile Beneficiarului\n5.1. Să utilizeze software-ul conform termenilor și condițiilor stabilite.\n5.2. Să efectueze plățile conform prevederilor prezentului contract.\nArticolul 6 – Încetarea Contractului\n6.1. Nerespectarea obligațiilor contractuale de către oricare dintre părți dă dreptul celeilalte părți să rezilieze contractul cu un preaviz scris de 30 de zile.\nArticolul 7 – Dispoziții Finale\n7.1. Modificările aduse prezentului contract se vor efectua numai prin acte adiționale semnate de ambele părți.\n7.2. Prezentul contract a fost încheiat în două exemplare originale câte unul pentru fiecare parte.",
+        "name": "Contract de prestări servicii software",
+        "needed_invoices": [
+          {
+            "description": "Servicii de software pentru facturare",
+            "frequency": "MONTHLY",
+            "invoices_count": 12,
+            "notes": "Factura emisă în ultima zi a fiecărei luni.",
+            "products": [
+              {
+                "currency": "USD",
+                "name": "Servicii de software pentru facturare",
+                "price": 2000.0,
+                "quantity": 1,
+                "unit": "MONETARY"
+              }
+            ],
+            "starting_date": "01-02-2025",
+            "terms": [
+              {
+                "description": "Beneficiarul se obligă să efectueze plata facturii până cel târziu la data de 15 a lunii următoare emiterii facturii.",
+                "name": "Plata facturii",
+                "value": "15"
+              }
+            ],
+            "type": "MULTIPLE"
+          }
+        ],
+        "obligee": {
+          "address": "Cluj-Napoca Str. Fabricii nr. 200",
+          "bank_address": null,
+          "bank_code": "Raiffeisen Bank",
+          "company_type": "SRL",
+          "country": null,
+          "director_first_name": "Elena",
+          "director_last_name": "Ionescu",
+          "email": null,
+          "fiscal_code": "RO87654321",
+          "iban": "RO98 RZBR 0000 4444 5555 66",
+          "idno": "RO87654321",
+          "name": "SC Industria DEF SRL",
+          "other_data": {},
+          "phone": null,
+          "tva_code": null,
+          "vertical": null
+        },
+        "obligor": {
+          "address": "București Str. Tehnologiei nr. 100",
+          "bank_address": null,
+          "bank_code": "Banca Transilvania",
+          "company_type": "SRL",
+          "country": null,
+          "director_first_name": "Andrei",
+          "director_last_name": "Popescu",
+          "email": null,
+          "fiscal_code": "RO12345678",
+          "iban": "RO12 BTRL 0000 1111 2222 33",
+          "idno": "RO12345678",
+          "name": "SC FacturaPlus SRL",
+          "other_data": {},
+          "phone": null,
+          "tva_code": null,
+          "vertical": null
+        },
+        "other_data": {}
+      }
+    },
+    {
+      "contract": {
+        "created_date": "10-03-2024",
+        "description": "This Service Agreement establishes the terms and conditions under which the Provider will deliver invoicing software services to the Client.",
+        "full_text_as_inline_markdown": "Service Agreement\nThis Service Agreement (“Agreement”) is made and entered into as of March 10 2024 (“Effective Date”) by and between [Sirius Software SRL] a corporation organized under the laws of [Republic of Moldova] with its principal place of business at [31 August 1989 nr.78] (“Provider”) and XYZ Corp a corporation organized under the laws of [Republic of Moldova] with its principal place of business at [Bodoni 49 str.] (“Client”).\n\nWHEREAS\nProvider is in the business of offering subscription-based invoicing software services (“Services”);\nClient desires to subscribe to the Services provided by the Provider under the terms and conditions set forth in this Agreement.\n\nNOW THEREFORE in consideration of the mutual covenants and agreements herein contained the parties agree as follows:\n\n1. Services Provided\n1.1 Provision of Services: Provider agrees to provide Client with access to its invoicing software platform including standard features as detailed in Exhibit A attached hereto.\n1.2 Access and Usage Rights: Client is granted a non-exclusive non-transferable right to access and use the Services solely for its internal business operations during the term of this Agreement.\n\n2. Term and Termination\n2.1 Term: This Agreement shall commence on the Effective Date and shall continue on a month-to-month basis unless terminated in accordance with this Agreement.\n2.2 Termination by Either Party: Either party may terminate this Agreement for any reason upon thirty (30) days’ prior written notice to the other party.\n2.3 Termination for Cause: Either party may terminate this Agreement immediately upon written notice if the other party breaches any material term of this Agreement and fails to cure such breach within fifteen (15) days after receipt of notice of the breach.\n\n3. Fees and Payment Terms\n3.1 Subscription Fee: The monthly subscription fee for the Services is $1000 (“Subscription Fee”) covering the period from the first to the last day of each calendar month.\n3.2 Pro Rata Temporis Billing: For Services initiated or terminated within a billing cycle the Subscription Fee shall be calculated on a pro rata temporis basis proportionate to the actual number of days Services were provided during that cycle.\n3.2 Payment Terms: Payment is due within thirty (30) days from the invoice date. All payments shall be made in U.S. dollars.\n3.3 Late Payments: Any payment not received by the due date shall accrue interest at the rate of one and one-half percent (1.5%) per month or the highest rate allowed by law whichever is lower.\n3.4 Taxes: Client is responsible for all applicable taxes duties or charges imposed by any governmental authority in connection with the Services excluding taxes based on Provider’s net income.\n\n4. Client Responsibilities\n4.1 Compliance: Client shall use the Services in compliance with all applicable laws and regulations.\n4.2 Account Security: Client is responsible for maintaining the confidentiality of its account credentials and for all activities that occur under its account.\n4.3 Data Entry: Client is responsible for the accuracy quality and legality of the data entered into the Services.\n\n5. Provider Responsibilities\n5.1 Service Availability: Provider shall use commercially reasonable efforts to make the Services available 24/7 except for scheduled maintenance and any downtime caused by circumstances beyond Provider’s reasonable control.\n5.2 Support Services: Provider shall provide Client with support services as detailed in Exhibit B.\n\n6. Confidentiality\n6.1 Confidential Information: Each party agrees to keep confidential all non-public information disclosed by the other party that is designated as confidential or that should reasonably be understood to be confidential (“Confidential Information”).\n6.2 Exclusions: Confidential Information does not include information that is:\nPublicly available without breach of this Agreement;\nAlready known by the receiving party prior to disclosure;\nIndependently developed by the receiving party;\nRightfully received from a third party without a duty of confidentiality.\n6.3 Use of Confidential Information: The receiving party shall use Confidential Information solely for the purpose of performing its obligations under this Agreement.\n\n7. Intellectual Property Rights\n7.1 Ownership: Provider retains all right title and interest in and to the Services including all intellectual property rights therein.\n7.2 License Grant: Provider grants Client a limited non-exclusive non-transferable license to access and use the Services during the term of this Agreement.\n7.3 Feedback: Any suggestions or feedback provided by Client regarding the Services may be used by Provider without any obligation to Client.\n\n8. Warranties and Disclaimers\n8.1 Provider Warranties: Provider warrants that:\nThe Services will perform materially in accordance with the documentation provided;\nIt has the legal right to enter into this Agreement and perform its obligations.\n8.2 Disclaimer of Warranties: Except as expressly provided the Services are provided “as is” without warranty of any kind. Provider disclaims all other warranties express or implied including any warranties of merchantability or fitness for a particular purpose.\n\n9. Limitation of Liability\n9.1 Exclusion of Consequential Damages: Neither party shall be liable for any indirect incidental special punitive or consequential damages arising out of or related to this Agreement.\n9.2 Limitation of Liability: Provider’s total cumulative liability under this Agreement shall not exceed the total amount of fees paid by Client to Provider in the six (6) months preceding the claim.\n\n10. Indemnification\n10.1 Provider Indemnification: Provider shall defend and indemnify Client against any third-party claims alleging that the Services infringe or misappropriate any intellectual property rights.\n10.2 Client Indemnification: Client shall defend and indemnify Provider against any third-party claims arising from Client’s use of the Services in violation of this Agreement or applicable laws.\n\n11. General Provisions\n11.1 Governing Law: This Agreement shall be governed by and construed in accordance with the laws of the State of [State] without regard to its conflict of laws principles.\n11.2 Entire Agreement: This Agreement constitutes the entire understanding between the parties and supersedes all prior agreements and understandings.\n11.3 Amendments: Any amendment to this Agreement must be in writing and signed by authorized representatives of both parties.\n11.4 Notices: All notices required under this Agreement shall be in writing and deemed given when delivered personally sent by registered mail or emailed with confirmation of receipt to the addresses specified above.\n11.5 Assignment: Neither party may assign this Agreement without the prior written consent of the other party except in the case of a merger or sale of all or substantially all of its assets.\n11.6 Force Majeure: Neither party shall be liable for any failure or delay in performance due to circumstances beyond its reasonable control.\n11.7 Severability: If any provision of this Agreement is found to be unenforceable the remaining provisions shall remain in full force and effect.\n11.8 Counterparts: This Agreement may be executed in counterparts each of which shall be deemed an original.\n\nIN WITNESS WHEREOF the parties hereto have executed this Agreement as of the Effective Date.\nProvider: [Invoicing Software Provider]\nBy: ________________________________\nName: ______________________________\nTitle: _______________________________\nDate: _______________________________\n\nClient: XYZ Corp\nBy: ________________________________\nName: ______________________________\nTitle: _______________________________\nDate: _______________________________",
+        "name": "Service Agreement",
+        "needed_invoices": [
+          {
+            "description": "Monthly subscription fee for services",
+            "frequency": "MONTHLY",
+            "invoices_count": "1",
+            "notes": "Payment is due within thirty (30) days from the invoice date.",
+            "products": [
+              {
+                "currency": "USD",
+                "name": "Subscription Fee",
+                "price": 1000,
+                "quantity": 1,
+                "unit": "MONETARY"
+              }
+            ],
+            "starting_date": "10-03-2024",
+            "terms": [
+              {
+                "description": "Payment is due within thirty (30) days from the invoice date.",
+                "name": "Payment Terms",
+                "value": "30 days"
+              },
+              {
+                "description": "Interest at the rate of one and one-half percent (1.5%) per month.",
+                "name": "Late Payment Interest",
+                "value": "1.5%"
+              }
+            ],
+            "type": "MULTIPLE"
+          }
+        ],
+        "obligee": {
+          "address": "Bodoni 49 str.",
+          "bank_address": null,
+          "bank_code": null,
+          "company_type": "SRL",
+          "country": "Republic of Moldova",
+          "director_first_name": null,
+          "director_last_name": null,
+          "email": null,
+          "fiscal_code": null,
+          "iban": null,
+          "idno": null,
+          "name": "XYZ Corp",
+          "other_data": {},
+          "phone": null,
+          "tva_code": null,
+          "vertical": null
+        },
+        "obligor": {
+          "address": "31 August 1989 nr.78",
+          "bank_address": null,
+          "bank_code": null,
+          "company_type": "SRL",
+          "country": "Republic of Moldova",
+          "director_first_name": null,
+          "director_last_name": null,
+          "email": null,
+          "fiscal_code": null,
+          "iban": null,
+          "idno": null,
+          "name": "Sirius Software SRL",
+          "other_data": {},
+          "phone": null,
+          "tva_code": null,
+          "vertical": null
+        },
+        "other_data": {}
+      }
+    }
+  ],
+  "status": "success"
+}
