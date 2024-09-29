@@ -8,7 +8,7 @@
     import { Modal } from 'flowbite-svelte';
     import { quintOut } from "svelte/easing";
     import axios from 'axios';
-    import {editor} from "../../routes/store.js";
+    import { editor } from "../../routes/store.js";
 
     export let setPage;
 
@@ -17,32 +17,38 @@
     }
 
     let defaultModal = false;
-
     let updated = false;
     let loading = false;
-
     let value = [];
-    const dropHandle = async (event) => {
+
+    const dropHandle = (event) => {
         event.preventDefault();
-        value = [];
+        const files = [];
+
         if (event.dataTransfer.items) {
             [...event.dataTransfer.items].forEach((item) => {
                 if (item.kind === 'file') {
                     const file = item.getAsFile();
-                    value.push(file);
+                    if (file) {
+                        files.push(file);
+                    }
                 }
             });
         } else {
             [...event.dataTransfer.files].forEach((file) => {
-                value.push(file);
+                files.push(file);
             });
         }
+
+        // Update value with the newly added files and ensure duplicates are removed
+        value = [...new Set([...value, ...files])];
     };
 
     const handleChange = (event) => {
-        const files = event.target.files;
+        const files = Array.from(event.target.files);
         if (files.length > 0) {
-            value.push(...files);
+            // Update value with the newly added files and ensure duplicates are removed
+            value = [...new Set([...value, ...files])];
         }
     };
 
@@ -146,7 +152,7 @@
                 <FileCheckSolid class="color-primary w-20 h-20" />
             </div>
             <div>
-                <Button outline on:click={() => { defaultModal = false; loading = false; updated = false;}}>Confirm</Button>
+                <Button outline on:click={() => { defaultModal = false; loading = false; updated = false; }}>Confirm</Button>
                 <Button on:click={() => setPage("dataeditor")} outline>Review</Button>
             </div>
         </div>
