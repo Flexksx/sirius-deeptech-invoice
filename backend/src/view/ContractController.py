@@ -1,4 +1,5 @@
 from datetime import datetime
+from database.models.invoices.invoices import InvoiceType
 from database import db_session
 from database.models import Client, Contract
 from flask import Flask, jsonify, request, abort, Blueprint
@@ -150,34 +151,34 @@ def delete_contract(id):
         db_session.rollback()
         abort(500, description=str(e))
 
-
-@contracts_blueprint.route('/clients/<int:client_id>/contracts', methods=['GET'])
-def get_client_contracts(client_id):
+@contracts_blueprint.route("/contract/<int:id>/invoice_types", methods=["GET"])
+def get_contract_invoice_types(id):
     try:
-        # Retrieve all contracts for the specified client (as obligor or obligee)
-        contracts = db_session.query(Contract).filter(
-            (Contract.obligor_client_id == client_id) |
-            (Contract.obligee_client_id == client_id)
-        ).all()
+        # Retrieve all invoice types for the specified contract ID
+        invoice_types = db_session.query(InvoiceType).filter_by(contract_id=id).all()
 
-        if not contracts:
-            return jsonify({"message": "No contracts found for this client."}), 404
+        if not invoice_types:
+            return jsonify({"message": "No invoice types found for this contract."}), 404
 
-        # Create a list of contracts to return
-        contract_list = []
-        for contract in contracts:
-            contract_list.append({
-                "id": contract.id,
-                "created_date": contract.created_date.strftime('%Y-%m-%d %H:%M:%S') if contract.created_date else None,
-                "updated_date": contract.updated_date.strftime('%Y-%m-%d %H:%M:%S') if contract.updated_date else None,
-                "obligor_client_id": contract.obligor_client_id,
-                "obligee_client_id": contract.obligee_client_id,
-                "text": contract.text,
-                "data": contract.data
+        # Create a list of invoice types to return
+        invoice_type_list = []
+        for invoice_type in invoice_types:
+            invoice_type_list.append({
+                "id": invoice_type.id,
+                "name": invoice_type.name,
+                "created_date": invoice_type.created_date.strftime('%Y-%m-%d %H:%M:%S') if invoice_type.created_date else None,
+                "notes": invoice_type.notes,
+                "data": invoice_type.data,
+                "description": invoice_type.description,
+                "frequency": invoice_type.frequency.name if invoice_type.frequency else None,
+                "invoices_count": invoice_type.invoices_count,
+                "needed_starting_date": invoice_type.needed_starting_date.strftime('%Y-%m-%d') if invoice_type.needed_starting_date else None
             })
 
-        return jsonify(contract_list), 200
+        return jsonify(invoice_type_list), 200
 
     except SQLAlchemyError as e:
         db_session.rollback()
         abort(500, description=str(e))
+
+
