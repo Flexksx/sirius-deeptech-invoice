@@ -1,0 +1,1 @@
+from .InvoiceTypeFrequency import InvoiceTypeFrequency

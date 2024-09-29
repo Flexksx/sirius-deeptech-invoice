@@ -73,7 +73,54 @@ def create_client():
             phone=data.get("phone"),
             data=data.get("data", {})
         )
+        # Check if the client already exists by name
+        existing_client = db_session.query(Client).filter(
+            Client.name == new_client.name).first()
 
+        if existing_client:
+            # Update the existing client's missing fields with the new data
+            existing_client.idno = existing_client.idno or new_client.idno
+            existing_client.company_type = existing_client.company_type or new_client.company_type
+            existing_client.vertical = existing_client.vertical or new_client.vertical
+            existing_client.address = existing_client.address or new_client.address
+            existing_client.bank_code = existing_client.bank_code or new_client.bank_code
+            existing_client.bank_name = existing_client.bank_name or new_client.bank_name
+            existing_client.bank_address = existing_client.bank_address or new_client.bank_address
+            existing_client.iban = existing_client.iban or new_client.iban
+            existing_client.tva_code = existing_client.tva_code or new_client.tva_code
+            existing_client.fiscal_code = existing_client.fiscal_code or new_client.fiscal_code
+            existing_client.director_first_name = existing_client.director_first_name or new_client.director_first_name
+            existing_client.director_last_name = existing_client.director_last_name or new_client.director_last_name
+            existing_client.country = existing_client.country or new_client.country
+            existing_client.email = existing_client.email or new_client.email
+            existing_client.phone = existing_client.phone or new_client.phone
+            # Merge data dictionaries
+            existing_client.data = {**new_client.data, **existing_client.data}
+
+            # Commit the changes to the existing client
+            db_session.commit()
+
+            # Return the updated client as JSON with a 200 OK status
+            return jsonify({
+                "id": existing_client.id,
+                "name": existing_client.name,
+                "idno": existing_client.idno,
+                "company_type": existing_client.company_type,
+                "vertical": existing_client.vertical,
+                "address": existing_client.address,
+                "bank_code": existing_client.bank_code,
+                "bank_name": existing_client.bank_name,
+                "bank_address": existing_client.bank_address,
+                "iban": existing_client.iban,
+                "tva_code": existing_client.tva_code,
+                "fiscal_code": existing_client.fiscal_code,
+                "director_first_name": existing_client.director_first_name,
+                "director_last_name": existing_client.director_last_name,
+                "country": existing_client.country,
+                "email": existing_client.email,
+                "phone": existing_client.phone,
+                "data": existing_client.data
+            }), 200
         # Add the new client to the session and commit
         db_session.add(new_client)
         db_session.commit()
